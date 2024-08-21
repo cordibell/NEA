@@ -2,8 +2,6 @@
 import tkinter as tk
 from tkinter import tix
 
-# this is a comment
-
 login_window = tk.Tk()
 login_window.geometry("1050x800")
 
