@@ -1,6 +1,12 @@
 # Login GUI module, created 17/07/24
 import tkinter as tk
-from tkinter import tix
+import login_code
+
+def collect_new_account():
+    username = new_username_entry.get()
+    password = new_password_entry.get()
+    new_account = login_code.createAccount(username, password)
+    new_account.save()
 
 login_window = tk.Tk()
 login_window.geometry("1050x800")
@@ -109,7 +115,7 @@ confirm_create_account_button = tk.Button(create_account_frame,
                                           bg="red",
                                           text="Create account",
                                           font=("Arial", 14, "bold"),
-                                        command=login_code.createAccount
+                                        command=collect_new_account
 )
 
 # Packing existing usernames

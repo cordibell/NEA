@@ -6,10 +6,9 @@ class Account:
         self.username = username
         self.password = password
 
-def createAccount():
-    username = new_username_entry.get("1.0", "end-1c") 
-    password = new_password_entry.get("1.0", "end-1c")
-    return username, password
+    def save(self):
+        print("Saving object to database")
 
-accountDetails = list(createAccount())
-account = Account(accountDetails[0], accountDetails[1])
+def createAccount(username, password):
+    print(username, password)
+    return Account(username, password)
