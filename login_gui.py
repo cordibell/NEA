@@ -1,12 +1,25 @@
 # Login GUI module, created 17/07/24
 import tkinter as tk
 import login_code
+import mysql.connector
 
-def collect_new_account():
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="standardUser",
+    password="StandardPassword123!",
+    database="ComputerScienceNEA"
+)
+
+def collect_new_account(): # collects data from new account text fields
     username = new_username_entry.get()
     password = new_password_entry.get()
-    new_account = login_code.createAccount(username, password)
-    new_account.save()
+    saving_new_account(username, password)
+
+def saving_new_account(username, password): # validates & saves new account data from text fields
+    is_valid_password = login_code.validate_new_password(password)
+    if is_valid_password:
+        new_account = login_code.createAccount(username, password)
+        new_account.save_user_password(mydb)
 
 login_window = tk.Tk()
 login_window.geometry("1050x800")
