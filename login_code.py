@@ -21,6 +21,21 @@ def validate_new_password(password): # checks if the password is 8+ characters &
         print("Doesn't contain special character")
         return False
 
+def validate_new_username(username, mydb): # checks if username is between 1-128 characters & is unique
+    mycursor = mydb.cursor()
+    if (len(username) == 0 or len(username) > 128):
+        print("Username too short or too long")
+        return False
+    else:
+        username_exists_sql = "SELECT * FROM USERS WHERE username=%s"
+        value = (username, )
+        mycursor.execute(username_exists_sql, value)
+        myresult = mycursor.fetchone()
+        if myresult is None:
+            return True
+        else:
+            print("Username already exists!")
+            return False
 
 
 class Account:
@@ -35,6 +50,7 @@ class Account:
         values = (self.username, self.password)
         mycursor.execute(save_sql, values)
         mydb.commit()
+
 
 def createAccount(username, password):
     print(username, password)

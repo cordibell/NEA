@@ -17,11 +17,14 @@ def collect_new_account(): # collects data from new account text fields
 
 def saving_new_account(username, password): # validates & saves new account data from text fields
     is_valid_password = login_code.validate_new_password(password)
-    if is_valid_password:
+    is_valid_username = login_code.validate_new_username(username, mydb)
+    if is_valid_password and is_valid_username:
         new_account = login_code.createAccount(username, password)
         new_account.save_user_password(mydb)
+        print("Saved to database")
 
 login_window = tk.Tk()
+login_window.title("Login Menu")
 login_window.geometry("1050x800")
 
 # Constructing the two frames for this component
