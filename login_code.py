@@ -37,12 +37,23 @@ def validate_new_username(username, mydb): # checks if username is between 1-128
             print("Username already exists!")
             return False
 
+def get_password(username, mydb): # collects the stored password for the given username in the database
+    mycursor = mydb.cursor()
+    check_password_sql = "SELECT password FROM USERS WHERE username=%s"
+    value = (username, )
+    mycursor.execute(check_password_sql, value)
+    password = mycursor.fetchone()
+    if password is None:
+        print("No password or username doesn't exist")
+        return ""
+    else:
+        print("Password found!")
+        return password
 
 class Account:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-
 
     def save_user_password(self, mydb): # saves username & password into database
         mycursor = mydb.cursor()
@@ -50,7 +61,6 @@ class Account:
         values = (self.username, self.password)
         mycursor.execute(save_sql, values)
         mydb.commit()
-
 
 def createAccount(username, password):
     print(username, password)

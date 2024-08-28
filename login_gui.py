@@ -10,6 +10,7 @@ mydb = mysql.connector.connect(
     database="ComputerScienceNEA"
 )
 
+# creating new account
 def collect_new_account(): # collects data from new account text fields
     username = new_username_entry.get()
     password = new_password_entry.get()
@@ -22,6 +23,26 @@ def saving_new_account(username, password): # validates & saves new account data
         new_account = login_code.createAccount(username, password)
         new_account.save_user_password(mydb)
         print("Saved to database")
+
+# logging in
+
+def collect_login(): # collects data from login to existing account text fields
+    username = existing_username_entry.get()
+    password = existing_password_entry.get()
+    validate_login(username, password)
+
+def validate_login(username, input_password): # checks if stored password matches inputted one for given account name
+    account_password = login_code.get_password(username, mydb)
+    print(type(account_password))
+    account_password = "".join(account_password)
+    print(f"Inputted password: {input_password}")
+    print(f"Account password: {account_password}")
+    if account_password == input_password:
+        print("Password matches, logging in...")
+    else:
+        print("Incorrect password")
+
+# tkinter windows
 
 login_window = tk.Tk()
 login_window.title("Login Menu")
@@ -124,7 +145,8 @@ confirm_sign_in_button = tk.Button(existing_account_frame,
                             activebackground="green",
                             bg="red",
                             text="Confirm sign in",
-                            font=("Arial", 14, "bold")
+                            font=("Arial", 14, "bold"),
+                            command=collect_login
 )
 confirm_create_account_button = tk.Button(create_account_frame,
                                           activebackground="green",
