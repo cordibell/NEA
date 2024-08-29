@@ -1,5 +1,4 @@
 # login code
-import tkinter as Tk
 import mysql.connector 
 
 # Setting up database
@@ -61,9 +60,5 @@ class Account:
         values = (self.username, self.password)
         mycursor.execute(save_sql, values)
         mydb.commit()
-
-def createAccount(username, password):
-    print(username, password)
-    return Account(username, password)
 
 mydb.close()

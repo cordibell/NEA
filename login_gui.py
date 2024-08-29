@@ -20,7 +20,7 @@ def saving_new_account(username, password): # validates & saves new account data
     is_valid_password = login_code.validate_new_password(password)
     is_valid_username = login_code.validate_new_username(username, mydb)
     if is_valid_password and is_valid_username:
-        new_account = login_code.createAccount(username, password)
+        new_account = login_code.Account(username, password)
         new_account.save_user_password(mydb)
         print("Saved to database")
 
