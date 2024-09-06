@@ -10,38 +10,29 @@ mydb = mysql.connector.connect(
     database="ComputerScienceNEA"
 )
 
-def login_menu():
-    # creating new account
-    def collect_new_account(): # collects data from new account text fields
-        username = new_username_entry.get()
-        password = new_password_entry.get()
-        saving_new_account(username, password)
+class Login: # wraps up data from entry & window into a class to easily move it to main.py
+    def __init__(self, login_window, new_username, new_password, existing_username, existing_password):
+        self.login_window = login_window
+        self.new_username = new_username
+        self.new_password = new_password
+        self.existing_username = existing_username
+        self.existing_password = existing_password
 
-    def saving_new_account(username, password): # validates & saves new account data from text fields
-        is_valid_password = login_code.validate_new_password(password)
-        is_valid_username = login_code.validate_new_username(username, mydb)
-        if is_valid_password and is_valid_username:
-            new_account = login_code.Account(username, password)
-            new_account.save_user_password(mydb)
-            print("Saved to database")
+    def get_new_username(self):
+        return self.new_username.get()
+    
+    def get_new_password(self):
+        return self.new_password.get()
+    
+    def get_existing_username(self):
+        return self.existing_username.get()
+    
+    def get_existing_password(self):
+        return self.existing_password.get()
+    
 
-    # logging in
+def login_menu(login_command, new_account_command):
 
-    def collect_login(): # collects data from login to existing account text fields
-        username = existing_username_entry.get()
-        password = existing_password_entry.get()
-        validate_login(username, password)
-
-    def validate_login(username, input_password): # checks if stored password matches inputted one for given account name
-        account_password = login_code.get_password(username, mydb)
-        print(type(account_password))
-        account_password = "".join(account_password)
-        print(f"Inputted password: {input_password}")
-        print(f"Account password: {account_password}")
-        if account_password == input_password:
-            print("Password matches, logging in...")
-        else:
-            print("Incorrect password")
 
     # tkinter windows
 
@@ -147,14 +138,14 @@ def login_menu():
                                 bg="red",
                                 text="Confirm sign in",
                                 font=("Arial", 14, "bold"),
-                                command=collect_login
+                                command=login_command
     )
     confirm_create_account_button = tk.Button(create_account_frame,
                                             activebackground="green",
                                             bg="red",
                                             text="Create account",
                                             font=("Arial", 14, "bold"),
-                                            command=collect_new_account
+                                            command=new_account_command
     )
 
     # Packing existing usernames
@@ -181,7 +172,8 @@ def login_menu():
     confirm_sign_in_button.pack(padx=20, pady=10)
     confirm_create_account_button.pack(padx=20, pady=10)
 
-    return login_window
-
+    # return login_window
+    return Login(login_window, new_username_entry, new_password_entry, existing_username_entry, existing_password_entry
+                 )
 # Assigning results of button to create account to account object
 

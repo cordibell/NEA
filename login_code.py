@@ -48,6 +48,25 @@ def get_password(username, mydb): # collects the stored password for the given u
     else:
         print("Password found!")
         return password
+    
+def validate_login(username, input_password, mydb): # checks if stored password matches inputted one for given account name
+    account_password = get_password(username, mydb)
+    print(type(account_password))
+    account_password = "".join(account_password)
+    print(f"Inputted password: {input_password}")
+    print(f"Account password: {account_password}")
+    if account_password == input_password:
+        print("Password matches, logging in...")
+    else:
+        print("Incorrect password")
+
+def saving_new_account(username, password, mydb): # validates & saves new account data from text fields
+    is_valid_password = validate_new_password(password)
+    is_valid_username = validate_new_username(username, mydb)
+    if is_valid_password and is_valid_username:
+        new_account = Account(username, password)
+        new_account.save_user_password(mydb)
+        print("Saved to database")
 
 class Account:
     def __init__(self, username, password):
