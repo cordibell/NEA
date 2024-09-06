@@ -10,178 +10,178 @@ mydb = mysql.connector.connect(
     database="ComputerScienceNEA"
 )
 
-# creating new account
-def collect_new_account(): # collects data from new account text fields
-    username = new_username_entry.get()
-    password = new_password_entry.get()
-    saving_new_account(username, password)
+def login_menu():
+    # creating new account
+    def collect_new_account(): # collects data from new account text fields
+        username = new_username_entry.get()
+        password = new_password_entry.get()
+        saving_new_account(username, password)
 
-def saving_new_account(username, password): # validates & saves new account data from text fields
-    is_valid_password = login_code.validate_new_password(password)
-    is_valid_username = login_code.validate_new_username(username, mydb)
-    if is_valid_password and is_valid_username:
-        new_account = login_code.Account(username, password)
-        new_account.save_user_password(mydb)
-        print("Saved to database")
+    def saving_new_account(username, password): # validates & saves new account data from text fields
+        is_valid_password = login_code.validate_new_password(password)
+        is_valid_username = login_code.validate_new_username(username, mydb)
+        if is_valid_password and is_valid_username:
+            new_account = login_code.Account(username, password)
+            new_account.save_user_password(mydb)
+            print("Saved to database")
 
-# logging in
+    # logging in
 
-def collect_login(): # collects data from login to existing account text fields
-    username = existing_username_entry.get()
-    password = existing_password_entry.get()
-    validate_login(username, password)
+    def collect_login(): # collects data from login to existing account text fields
+        username = existing_username_entry.get()
+        password = existing_password_entry.get()
+        validate_login(username, password)
 
-def validate_login(username, input_password): # checks if stored password matches inputted one for given account name
-    account_password = login_code.get_password(username, mydb)
-    print(type(account_password))
-    account_password = "".join(account_password)
-    print(f"Inputted password: {input_password}")
-    print(f"Account password: {account_password}")
-    if account_password == input_password:
-        print("Password matches, logging in...")
-    else:
-        print("Incorrect password")
+    def validate_login(username, input_password): # checks if stored password matches inputted one for given account name
+        account_password = login_code.get_password(username, mydb)
+        print(type(account_password))
+        account_password = "".join(account_password)
+        print(f"Inputted password: {input_password}")
+        print(f"Account password: {account_password}")
+        if account_password == input_password:
+            print("Password matches, logging in...")
+        else:
+            print("Incorrect password")
 
-# tkinter windows
+    # tkinter windows
 
-login_window = tk.Tk()
-login_window.title("Login Menu")
-login_window.geometry("1050x800")
+    login_window = tk.Tk()
+    login_window.title("Login Menu")
+    login_window.geometry("1050x800")
 
-# Constructing the two frames for this component
-existing_account_frame = tk.Frame(login_window)
-create_account_frame = tk.Frame(login_window)
+    # Constructing the two frames for this component
+    existing_account_frame = tk.Frame(login_window)
+    create_account_frame = tk.Frame(login_window)
 
-# Constructing the border frames for the titles & text fields
+    # Constructing the border frames for the titles & text fields
 
-border_colour_existing_account = tk.Frame(existing_account_frame, bg="red")
-border_colour_create_account = tk.Frame(create_account_frame, bg="red")
+    border_colour_existing_account = tk.Frame(existing_account_frame, bg="red")
+    border_colour_create_account = tk.Frame(create_account_frame, bg="red")
 
-border_colour_existing_username = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
-border_colour_existing_password = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_existing_username = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_existing_password = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
 
-border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
-border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
 
-# Constructing the label widgets for the titles
-existing_account_title = tk.Label(
-    border_colour_existing_account,
-    text="SIGN INTO AN EXISTING ACCOUNT",
-    font=("Arial", 26, "bold"),
-    width=25,
-    anchor="n",
-    wraplength=350,
-    justify="center"
-)
-create_account_title = tk.Label(
-    border_colour_create_account,
-    text="CREATE AN ACCOUNT",
-    font=("Arial", 26, "bold"),
-    width=25,
-    anchor="n",
-    wraplength=350,
-    justify="center"
-)
-# Using the grid manager to display the two frames
-existing_account_frame.grid(row=0, column=0)
-create_account_frame.grid(row=0,column=1)
+    # Constructing the label widgets for the titles
+    existing_account_title = tk.Label(
+        border_colour_existing_account,
+        text="SIGN INTO AN EXISTING ACCOUNT",
+        font=("Arial", 26, "bold"),
+        width=25,
+        anchor="n",
+        wraplength=350,
+        justify="center"
+    )
+    create_account_title = tk.Label(
+        border_colour_create_account,
+        text="CREATE AN ACCOUNT",
+        font=("Arial", 26, "bold"),
+        width=25,
+        anchor="n",
+        wraplength=350,
+        justify="center"
+    )
+    # Using the grid manager to display the two frames
+    existing_account_frame.grid(row=0, column=0)
+    create_account_frame.grid(row=0,column=1)
 
-# Packing the two titles alongside their border colours onto the window
-existing_account_title.pack(padx=3,pady=3)
-create_account_title.pack(padx=3,pady=3)
-border_colour_existing_account.pack(padx=20,pady=20)
-border_colour_create_account.pack(padx=20,pady=20)
+    # Packing the two titles alongside their border colours onto the window
+    existing_account_title.pack(padx=3,pady=3)
+    create_account_title.pack(padx=3,pady=3)
+    border_colour_existing_account.pack(padx=20,pady=20)
+    border_colour_create_account.pack(padx=20,pady=20)
 
-# Creating an enter username and password box for each option
-# Signing into an existing account
-existing_username_entry = tk.Entry(border_colour_existing_username,
-                             borderwidth=2,
-                             font=("Arial", 12)
-                             )
-
-existing_username_entry_label = tk.Label(border_colour_existing_username,
-                                         text="Username",
-                                         font=("Arial", 14, "italic"),
-                                         anchor="w"
+    # Creating an enter username and password box for each option
+    # Signing into an existing account
+    existing_username_entry = tk.Entry(border_colour_existing_username,
+                                borderwidth=2,
+                                font=("Arial", 12)
                                 )
 
-existing_password_entry = tk.Entry(border_colour_existing_password,
-                             borderwidth=2,
-                             font=("Arial", 12),
-                             show="•"
-                        )
+    existing_username_entry_label = tk.Label(border_colour_existing_username,
+                                            text="Username",
+                                            font=("Arial", 14, "italic"),
+                                            anchor="w"
+                                    )
 
-existing_password_entry_label = tk.Label(border_colour_existing_password,
-                                         text="Password",
-                                         font=("Arial", 14, "italic"),
-                                         anchor="w"
-                                )
-# Create new account
-new_username_entry = tk.Entry(border_colour_new_username,
-                             borderwidth=2,
-                             font=("Arial", 12)
-                             )
+    existing_password_entry = tk.Entry(border_colour_existing_password,
+                                borderwidth=2,
+                                font=("Arial", 12),
+                                show="•"
+                            )
 
-new_username_entry_label = tk.Label(border_colour_new_username,
-                                         text="Enter a username",
-                                         font=("Arial", 14, "italic"),
-                                         anchor="w"
-                                )
-
-new_password_entry = tk.Entry(border_colour_new_password,
-                             borderwidth=2,
-                             font=("Arial", 12),
-                             show="•"
-                        )
-
-new_password_entry_label = tk.Label(border_colour_new_password,
-                                         text="Enter a password",
-                                         font=("Arial", 14, "italic"),
-                                         anchor="w"
+    existing_password_entry_label = tk.Label(border_colour_existing_password,
+                                            text="Password",
+                                            font=("Arial", 14, "italic"),
+                                            anchor="w"
+                                    )
+    # Create new account
+    new_username_entry = tk.Entry(border_colour_new_username,
+                                borderwidth=2,
+                                font=("Arial", 12)
                                 )
 
-# Confirmation buttons
-confirm_sign_in_button = tk.Button(existing_account_frame,
-                            activebackground="green",
-                            bg="red",
-                            text="Confirm sign in",
-                            font=("Arial", 14, "bold"),
-                            command=collect_login
-)
-confirm_create_account_button = tk.Button(create_account_frame,
-                                          activebackground="green",
-                                          bg="red",
-                                          text="Create account",
-                                          font=("Arial", 14, "bold"),
-                                        command=collect_new_account
-)
+    new_username_entry_label = tk.Label(border_colour_new_username,
+                                            text="Enter a username",
+                                            font=("Arial", 14, "italic"),
+                                            anchor="w"
+                                    )
 
-# Packing existing usernames
-existing_username_entry_label.pack(padx=1, pady=1)
-existing_username_entry.pack(padx=20,ipady=3, pady=10)
-border_colour_existing_username.pack(padx=15, pady=5)
+    new_password_entry = tk.Entry(border_colour_new_password,
+                                borderwidth=2,
+                                font=("Arial", 12),
+                                show="•"
+                            )
 
-# Packing existing passswords
-existing_password_entry_label.pack(padx=1, pady=1)
-existing_password_entry.pack(padx=20, ipady=3, pady=10)
-border_colour_existing_password.pack(padx=15, pady=5)
+    new_password_entry_label = tk.Label(border_colour_new_password,
+                                            text="Enter a password",
+                                            font=("Arial", 14, "italic"),
+                                            anchor="w"
+                                    )
 
-# Packing new usernames
-new_username_entry_label.pack(padx=1, pady=1)
-new_username_entry.pack(padx=20,ipady=3, pady=10)
-border_colour_new_username.pack(padx=15, pady=5)
+    # Confirmation buttons
+    confirm_sign_in_button = tk.Button(existing_account_frame,
+                                activebackground="green",
+                                bg="red",
+                                text="Confirm sign in",
+                                font=("Arial", 14, "bold"),
+                                command=collect_login
+    )
+    confirm_create_account_button = tk.Button(create_account_frame,
+                                            activebackground="green",
+                                            bg="red",
+                                            text="Create account",
+                                            font=("Arial", 14, "bold"),
+                                            command=collect_new_account
+    )
 
-# Packing new passwords
-new_password_entry_label.pack(padx=1, pady=1)
-new_password_entry.pack(padx=20, ipady=3, pady=10)
-border_colour_new_password.pack(padx=15, pady=5)
+    # Packing existing usernames
+    existing_username_entry_label.pack(padx=1, pady=1)
+    existing_username_entry.pack(padx=20,ipady=3, pady=10)
+    border_colour_existing_username.pack(padx=15, pady=5)
 
-# Packing confirmation buttons
-confirm_sign_in_button.pack(padx=20, pady=10)
-confirm_create_account_button.pack(padx=20, pady=10)
+    # Packing existing passswords
+    existing_password_entry_label.pack(padx=1, pady=1)
+    existing_password_entry.pack(padx=20, ipady=3, pady=10)
+    border_colour_existing_password.pack(padx=15, pady=5)
+
+    # Packing new usernames
+    new_username_entry_label.pack(padx=1, pady=1)
+    new_username_entry.pack(padx=20,ipady=3, pady=10)
+    border_colour_new_username.pack(padx=15, pady=5)
+
+    # Packing new passwords
+    new_password_entry_label.pack(padx=1, pady=1)
+    new_password_entry.pack(padx=20, ipady=3, pady=10)
+    border_colour_new_password.pack(padx=15, pady=5)
+
+    # Packing confirmation buttons
+    confirm_sign_in_button.pack(padx=20, pady=10)
+    confirm_create_account_button.pack(padx=20, pady=10)
+
+    return login_window
 
 # Assigning results of button to create account to account object
 
-
-
-login_window.mainloop()
