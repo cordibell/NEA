@@ -10,7 +10,7 @@ mydb = mysql.connector.connect(
     database="ComputerScienceNEA"
 )
 
-class Login: # wraps up data from entry & window into a class to easily move it to main.py
+class Login: # encapsulates data from entry & window into a class to easily move it to main.py
     def __init__(self, login_window, new_username, new_password, existing_username, existing_password):
         self.login_window = login_window
         self.new_username = new_username
@@ -173,7 +173,6 @@ def login_menu(login_command, new_account_command):
     confirm_create_account_button.pack(padx=20, pady=10)
 
     # return login_window
-    return Login(login_window, new_username_entry, new_password_entry, existing_username_entry, existing_password_entry
-                 )
+    return Login(login_window, new_username_entry, new_password_entry, existing_username_entry, existing_password_entry)
 # Assigning results of button to create account to account object
 

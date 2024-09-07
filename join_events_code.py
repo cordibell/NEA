@@ -98,6 +98,17 @@ def find_number_of_days(start_date, end_date): # finds number of days between tw
     print(f"Distance between dates: {length.days}")
     return length.days
 
+def host_event(event_name, timeframe, start_date, end_date): # creates an object for an event & saves it to database
+    is_valid_dates = validate_dates(start_date, end_date, timeframe)
+    is_valid_title = valid_title(event_name)
+    if is_valid_dates and is_valid_title:
+        start_date = datetime.strptime(start_date, '%d/%m/%y').date()
+        end_date = datetime.strptime(end_date, '%d/%m/%y').date()
+        new_event = Host_event(event_name, timeframe, start_date, end_date)
+        new_event.save_event_info(mydb)
+    else:
+        print("Can't save to database")
+
 class Host_event: # event hosted by a user, where they are trying to find out availability for it
     def __init__(self, event_name, timeframe, start_date, end_date):
         self.event_name = event_name

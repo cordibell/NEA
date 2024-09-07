@@ -12,9 +12,33 @@ mydb = mysql.connector.connect(
     database="ComputerScienceNEA"
 )
 
-# tkinter windows
+class joinEvents: # encapsulates data from joining & hosting events
+    def __init__(self, join_events_window, join_event_code, timeframe_var, start_date, end_date, event_title):
+        self.join_events_window = join_events_window
+        self.join_event_code = join_event_code
+        self.timeframe_var = timeframe_var
+        self.start_date = start_date
+        self.end_date = end_date
+        self.event_title = event_title
+    
+    def get_join_event_code(self):
+        return self.join_events_code.get()
+    
+    def get_timeframe_var(self):
+        return self.timeframe_var.get()
+    
+    def get_start_date(self):
+        return self.start_date.get()
+    
+    def get_end_date(self):
+        return self.end_date.get()
+    
+    def get_event_title(self):
+        return self.event_title.get()
 
-def join_events_menu(root):
+# tkinter window
+
+def join_events_menu(root, collect_join_event, collect_host_event):
 
     join_events_window = tk.Toplevel(root)
     join_events_window.title("Join or Host an Event Menu")
@@ -23,30 +47,7 @@ def join_events_menu(root):
     # Collecting information
 
     timeframe_var = tk.IntVar()
-
-    def collect_host_event(): # Collects data from host_event inputs.
-        selected_timeframe = timeframe_var.get()
-        timeframe = join_events_code.find_timeframe(selected_timeframe)
-        print(f"Timeframe is {timeframe}")
-        start_date = start_date_entry.get()
-        end_date = end_date_entry.get()
-        event_name = event_title_entry.get()
-        print(f"Event name: {event_name}, start date: {start_date}, end date: {end_date}")
-        host_event(event_name, timeframe, start_date, end_date)
-
-    def host_event(event_name, timeframe, start_date, end_date): # creates an object for an event & saves it to database
-        is_valid_dates = join_events_code.validate_dates(start_date, end_date, timeframe)
-        is_valid_title = join_events_code.valid_title(event_name)
-        if is_valid_dates and is_valid_title:
-            start_date = datetime.strptime(start_date, '%d/%m/%y').date()
-            end_date = datetime.strptime(end_date, '%d/%m/%y').date()
-            new_event = join_events_code.Host_event(event_name, timeframe, start_date, end_date)
-            new_event.save_event_info(mydb)
-        else:
-            print("Can't save to database")
-
         
-
     # Constructing the two frames for this component
     join_event_frame = tk.Frame(join_events_window)
     host_event_frame = tk.Frame(join_events_window)
@@ -199,7 +200,8 @@ def join_events_menu(root):
                                 activebackground="green",
                                 bg="red",
                                 text="Join event",
-                                font=("Arial", 14, "bold")
+                                font=("Arial", 14, "bold"),
+                                command=collect_join_event
     )
 
     confirm_host_event_button = tk.Button(host_event_frame,
@@ -264,4 +266,4 @@ def join_events_menu(root):
     generated_code_description_label.pack(padx=20, pady=10)
     generated_code_label.pack(padx=20, pady=10)
 
-    return join_events_window
+    return joinEvents(join_events_window, join_event_code_entry, timeframe_var, start_date_entry, end_date_entry, event_title_entry)
