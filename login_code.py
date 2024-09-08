@@ -55,10 +55,14 @@ def validate_login(username, input_password, mydb): # checks if stored password 
     account_password = "".join(account_password)
     print(f"Inputted password: {input_password}")
     print(f"Account password: {account_password}")
-    if account_password == input_password:
+    if account_password == "" or username == "":
+        return False
+    elif account_password == input_password:
         print("Password matches, logging in...")
+        return True
     else:
         print("Incorrect password")
+        return False
 
 def saving_new_account(username, password, mydb): # validates & saves new account data from text fields
     is_valid_password = validate_new_password(password)

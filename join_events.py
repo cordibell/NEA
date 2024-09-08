@@ -4,6 +4,7 @@ import tkinter as tk
 import join_events_code
 import mysql.connector
 from datetime import datetime
+from tkinter import messagebox
 
 mydb = mysql.connector.connect(
     host="localhost",
@@ -22,7 +23,7 @@ class joinEvents: # encapsulates data from joining & hosting events
         self.event_title = event_title
     
     def get_join_event_code(self):
-        return self.join_events_code.get()
+        return self.join_event_code.get()
     
     def get_timeframe_var(self):
         return self.timeframe_var.get()
@@ -35,10 +36,13 @@ class joinEvents: # encapsulates data from joining & hosting events
     
     def get_event_title(self):
         return self.event_title.get()
+    
+    def display_unique_code(self, generated_code):
+        messagebox.showinfo("Event code", f"Your event code is {generated_code}.")
 
 # tkinter window
 
-def join_events_menu(root, collect_join_event, collect_host_event):
+def join_events_menu(root, collect_join_event, collect_host_event): # displays join events window
 
     join_events_window = tk.Toplevel(root)
     join_events_window.title("Join or Host an Event Menu")
@@ -212,20 +216,6 @@ def join_events_menu(root, collect_join_event, collect_host_event):
                                             command=collect_host_event
     )
 
-    # Generated unique code
-    generated_code = "X123Y456"
-
-    generated_code_description_label = tk.Label(host_event_frame,
-                                                text="Your code is:",
-                                                font=("Arial", 12, "bold"),
-                                                anchor="w"
-    )
-    generated_code_label = tk.Label(host_event_frame,
-                                    text=generated_code,
-                                    font=("Arial", 12),
-                                    anchor="w"
-                                    )
-
     # Packing join existing event entry
     join_event_code_entry_label.pack(side=tk.TOP, anchor="n", padx=1, pady=1)
     join_event_code_entry.pack(side=tk.TOP, anchor="n", padx=20,ipady=3, pady=10)
@@ -262,8 +252,6 @@ def join_events_menu(root, collect_join_event, collect_host_event):
     confirm_join_event_button.pack(padx=20, pady=10)
     confirm_host_event_button.pack(padx=20, pady=10)
 
-    # Packing generated code labels
-    generated_code_description_label.pack(padx=20, pady=10)
-    generated_code_label.pack(padx=20, pady=10)
-
     return joinEvents(join_events_window, join_event_code_entry, timeframe_var, start_date_entry, end_date_entry, event_title_entry)
+
+mydb.close()

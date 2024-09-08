@@ -3,6 +3,8 @@
 import mysql.connector
 from datetime import datetime
 import calendar
+import random
+import string
 
 # Connecting to database
 mydb = mysql.connector.connect(
@@ -98,23 +100,68 @@ def find_number_of_days(start_date, end_date): # finds number of days between tw
     print(f"Distance between dates: {length.days}")
     return length.days
 
-def host_event(event_name, timeframe, start_date, end_date): # creates an object for an event & saves it to database
+def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username): # creates an object for an event & saves it to database
     is_valid_dates = validate_dates(start_date, end_date, timeframe)
     is_valid_title = valid_title(event_name)
     if is_valid_dates and is_valid_title:
         start_date = datetime.strptime(start_date, '%d/%m/%y').date()
         end_date = datetime.strptime(end_date, '%d/%m/%y').date()
-        new_event = Host_event(event_name, timeframe, start_date, end_date)
+        new_event = Host_event(event_name, timeframe, start_date, end_date, generated_code, host_username)
         new_event.save_event_info(mydb)
+        return True
     else:
         print("Can't save to database")
+        return False
+
+def generate_unique_code(mydb): # generates 8 digit alphanumeric random code
+    is_unique = False
+    while not is_unique:
+        length = 8
+        chars = string.ascii_uppercase + string.digits
+        generated_code = ''.join(random.choices(chars, k=length))
+        print(f"Generated code is {generated_code}")
+        is_unique = check_code_unique(generated_code, mydb)
+    return generated_code
+
+def check_code_unique(generated_code, mydb): # checks if generated event ID is unique
+    mycursor = mydb.cursor()
+    code_exists_sql = "SELECT eventID FROM HOST_EVENTS WHERE eventID=%s"
+    value = (generated_code, )
+    mycursor.execute(code_exists_sql, value)
+    myresult = mycursor.fetchone()
+    if myresult is None:
+        return True
+    else:
+        return False
+
+def find_event_id(eventID, mydb): # finds if the given event ID exists in the database
+    mycursor = mydb.cursor()
+    find_event_id_sql = "SELECT eventID FROM HOST_EVENTS WHERE eventID=%s"
+    value = (eventID, )
+    mycursor.execute(find_event_id_sql, value)
+    myresult = mycursor.fetchone()
+    if myresult is None:
+        print("Event ID can't be found")
+        return False
+    else:
+        print("Event ID found.")
+        return True                      
 
 class Host_event: # event hosted by a user, where they are trying to find out availability for it
-    def __init__(self, event_name, timeframe, start_date, end_date):
+    def __init__(self, event_name, timeframe, start_date, end_date, generated_code, host_username):
         self.event_name = event_name
         self.timeframe = timeframe
         self.start_date = start_date
         self.end_date = end_date
+        self.generated_code = generated_code
+        self.host_username = host_username
 
-    def save_event_info(self, mydb):
+    def save_event_info(self, mydb): # saves collected data to database
+        mycursor = mydb.cursor()
+        save_event_sql = "INSERT INTO HOST_EVENTS (eventID, event_name, host_username, start_date, end_date) VALUES (%s, %s, %s, %s, %s)"
+        values = (self.generated_code, self.event_name, self.host_username, self.start_date, self.end_date)
+        mycursor.execute(save_event_sql, values)
+        mydb.commit()
         print("Saved event info to database")
+
+mydb.close()
