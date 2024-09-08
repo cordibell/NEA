@@ -21,5 +21,3 @@ def calendar_menu(root): # displays calendar window
     placeholder_text.pack()
 
     return visualCalendar(calendar_window)
-
-mydb.close()
