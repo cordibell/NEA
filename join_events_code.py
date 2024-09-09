@@ -100,7 +100,7 @@ def find_number_of_days(start_date, end_date): # finds number of days between tw
     print(f"Distance between dates: {length.days}")
     return length.days
 
-def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username): # creates an object for an event & saves it to database
+def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username, mydb): # creates an object for an event & saves it to database
     is_valid_dates = validate_dates(start_date, end_date, timeframe)
     is_valid_title = valid_title(event_name)
     if is_valid_dates and is_valid_title:

@@ -3,7 +3,7 @@
 import login_gui
 import login_code
 
-import join_events
+import join_events_gui
 import join_events_code
 
 import calendar_gui
@@ -40,7 +40,7 @@ class LoginCommands: # encapsulates methods to collect & process data from login
     def load_join_menu(self): # loads next menu if username matches password & withdraws current menu
         joinEventCommand = JoinEventCommands(mydb)
         self.login.login_window.withdraw()
-        join_event = join_events.join_events_menu(login.login_window, joinEventCommand.collect_join_event, joinEventCommand.collect_host_event)
+        join_event = join_events_gui.join_events_menu(login.login_window, joinEventCommand.collect_join_event, joinEventCommand.collect_host_event)
         joinEventCommand.set_join_event(join_event)
 
     def collect_new_account(self): # collects data from new account text fields
@@ -69,7 +69,7 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
         end_date = self.join_event.get_end_date()
         event_name = self.join_event.get_event_title()
         generated_code = join_events_code.generate_unique_code(self.mydb)
-        valid_event = join_events_code.host_event(event_name, timeframe, start_date, end_date, generated_code, login.get_existing_username())  
+        valid_event = join_events_code.host_event(event_name, timeframe, start_date, end_date, generated_code, login.get_existing_username(), self.mydb)  
         if valid_event:
             self.join_event.display_unique_code(generated_code)
 
@@ -93,5 +93,3 @@ if __name__ == '__main__':
 
     # join_event.join_events_window.withdraw()
     login.login_window.mainloop()
-
-mydb.close()
