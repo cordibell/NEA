@@ -15,12 +15,13 @@ def start_date_before_end_date(start_date, end_date): # finds if start date is b
     return start_date < end_date
 
 def find_host_start_date(event_ID): # collects host start date from database
-    mycursor = mydb.cursor()
+    mycursor = mydb.cursor()-
     find_start_date_sql = "SELECT start_date FROM HOST_EVENTS WHERE eventID=%s"
     value = (event_ID, )
     mycursor.execute(find_start_date_sql, value)
     host_start_date = mycursor.fetchone()
-    host_start_date = datetime.strptime(host_start_date, '%Y-%m-%d %H:%M:%S').date()
+    host_start_date = host_start_date[0].date()
+    print(host_start_date)
     return host_start_date 
 
 def find_host_end_date(event_ID):# collects host end date from database
@@ -29,7 +30,8 @@ def find_host_end_date(event_ID):# collects host end date from database
     value = (event_ID, )
     mycursor.execute(find_end_date_sql, value)
     host_end_date = mycursor.fetchone()
-    host_end_date = datetime.strptime(host_end_date, '%Y-%m-%d %H:%M:%S').date()
+    host_end_date = host_end_date[0].date()
+    print(host_end_date)
     return host_end_date
 
 def date_in_range(date, host_start_date, host_end_date): # finds if date is within host range
