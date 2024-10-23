@@ -31,7 +31,7 @@ class Login: # encapsulates data from entry & window into a class to easily move
         return self.existing_password.get()
     
 
-def login_menu(login_command, new_account_command):
+def login_menu(login_command, new_account_command): # contains all the widgets for the login GUI
 
 
     # tkinter windows
@@ -174,5 +174,3 @@ def login_menu(login_command, new_account_command):
 
     # return login_window
     return Login(login_window, new_username_entry, new_password_entry, existing_username_entry, existing_password_entry)
-# Assigning results of button to create account to account object
-

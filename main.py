@@ -8,6 +8,9 @@ import join_events_code
 
 import calendar_gui
 
+import create_event_gui
+import create_event_code
+
 import mysql.connector
 
 # connecting to database
@@ -57,8 +60,8 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
         self.join_event = join_event
         
     def collect_join_event(self): # collects data from join event code text field
-        eventID = self.join_event.get_join_event_code()
-        id_exists = join_events_code.find_event_id(eventID, self.mydb)
+        self.eventID = self.join_event.get_join_event_code()
+        id_exists = join_events_code.find_event_id(self.eventID, self.mydb)
         if id_exists:
             self.load_calendar_menu()
         
@@ -76,7 +79,8 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         calendarCommand = CalendarCommands(self.mydb)
         self.join_event.join_events_window.withdraw()
-        calendar_menu = calendar_gui.calendar_menu(login.login_window)
+        calendar_menu = calendar_gui.calendar_menu(login.login_window, calendarCommand.load_create_event_menu)
+        calendar_menu.set_event_ID(self.eventID)
         calendarCommand.set_calendar_menu(calendar_menu)
 
 class CalendarCommands:
@@ -85,6 +89,31 @@ class CalendarCommands:
 
     def set_calendar_menu(self, calendar_menu):
         self.calendar_menu = calendar_menu
+
+    def load_create_event_menu(self): # loads create event menu & hides calendar menu
+        createEventCommand = CreateEventCommands(self.mydb, self.calendar_menu)
+        self.calendar_menu.calendar_window.withdraw()
+        create_event_menu = create_event_gui.create_event_menu(login.login_window, createEventCommand.create_event, createEventCommand.load_calendar_menu)
+        createEventCommand.set_create_event_menu(create_event_menu)
+    
+
+class CreateEventCommands:
+    def __init__(self, mydb, calendar_menu):
+        self.mydb = mydb
+        self.calendar_window = calendar_menu.calendar_window
+        self.eventID = calendar_menu.eventID
+    
+    def set_create_event_menu(self, create_event_menu):
+        self.create_event_menu = create_event_menu
+    
+    def create_event(self):
+        start_date = self.create_event_menu.get_start_date()
+        end_date = self.create_event_menu.get_end_date()
+        create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, self.eventID)
+
+    def load_calendar_menu(self): # loads the calendar menu & hides join event menu
+        self.create_event_menu.create_event_window.withdraw()
+        self.calendar_window.deiconify()
 
 if __name__ == '__main__':
     loginCommand = LoginCommands(mydb)
