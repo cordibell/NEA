@@ -134,7 +134,7 @@ class userEvent:
 
 def store_event_to_database(start_date, end_date, start_time, end_time, eventID, event_title, is_repetitive, repetition_timeframe, is_tentative, username):
     mycursor = mydb.cursor()
-    save_to_database_sql = 
+    
 
     
 def create_event(start_date, end_date, valid_date_format, start_time, end_time, eventID, event_title, valid_title, is_repetitive, repetition_timeframe, is_tentative, username): # creates event in database
