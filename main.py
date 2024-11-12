@@ -41,7 +41,7 @@ class LoginCommands: # encapsulates methods to collect & process data from login
             self.load_join_menu()
     
     def load_join_menu(self): # loads next menu if username matches password & withdraws current menu
-        joinEventCommand = JoinEventCommands(mydb)
+        joinEventCommand = JoinEventCommands(mydb, self.existing_username)
         self.login.login_window.withdraw()
         join_event = join_events_gui.join_events_menu(login.login_window, joinEventCommand.collect_join_event, joinEventCommand.collect_host_event)
         joinEventCommand.set_join_event(join_event)
@@ -53,8 +53,9 @@ class LoginCommands: # encapsulates methods to collect & process data from login
 
 
 class JoinEventCommands: # encapsulates methods to collect & process data from join event menu
-    def __init__(self, mydb):
+    def __init__(self, mydb, username):
         self.mydb = mydb
+        self.username = username
     
     def set_join_event(self, join_event):
         self.join_event = join_event
@@ -77,31 +78,33 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
             self.join_event.display_unique_code(generated_code)
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
-        calendarCommand = CalendarCommands(self.mydb)
+        calendarCommand = CalendarCommands(self.mydb, self.username)
         self.join_event.join_events_window.withdraw()
         calendar_menu = calendar_gui.calendar_menu(login.login_window, calendarCommand.load_create_event_menu)
         calendar_menu.set_event_ID(self.eventID)
         calendarCommand.set_calendar_menu(calendar_menu)
 
 class CalendarCommands:
-    def __init__(self, mydb):
+    def __init__(self, mydb, username):
         self.mydb = mydb
+        self.username = username
 
     def set_calendar_menu(self, calendar_menu):
         self.calendar_menu = calendar_menu
 
     def load_create_event_menu(self): # loads create event menu & hides calendar menu
-        createEventCommand = CreateEventCommands(self.mydb, self.calendar_menu)
+        createEventCommand = CreateEventCommands(self.mydb, self.calendar_menu, self.username)
         self.calendar_menu.calendar_window.withdraw()
         create_event_menu = create_event_gui.create_event_menu(login.login_window, createEventCommand.create_event, createEventCommand.load_calendar_menu)
         createEventCommand.set_create_event_menu(create_event_menu)
     
 
 class CreateEventCommands:
-    def __init__(self, mydb, calendar_menu):
+    def __init__(self, mydb, calendar_menu, username):
         self.mydb = mydb
         self.calendar_window = calendar_menu.calendar_window
         self.eventID = calendar_menu.eventID
+        self.username = username
     
     def set_create_event_menu(self, create_event_menu):
         self.create_event_menu = create_event_menu
@@ -109,7 +112,13 @@ class CreateEventCommands:
     def create_event(self):
         start_date = self.create_event_menu.get_start_date()
         end_date = self.create_event_menu.get_end_date()
-        create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, self.eventID)
+        start_time = self.create_event_menu.get_start_time()
+        end_time = self.create_event_menu.get_end_time()
+        event_title = self.create_event_menu.get_event_title()
+        is_repetitive = self.create_event_menu.get_is_repetitive()
+        repetition_timeframe = self.create_event_menu.get_repetitive_timeframe()
+        is_tentative = self.create_event_menu.get_is_tentative()
+        create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, start_time, end_time, self.eventID, event_title, join_events_code.valid_title, is_repetitive, repetition_timeframe, is_tentative, self.username)
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         self.create_event_menu.create_event_window.withdraw()
