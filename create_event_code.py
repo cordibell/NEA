@@ -130,7 +130,8 @@ def convert_is_tentative(is_tentative):
         return False
     
 class userEvent:
-    def __init__(eventID, event_title, )
+    def __init__(eventID, event_title, ):
+        pass
 
 def store_event_to_database(start_date, end_date, start_time, end_time, eventID, event_title, is_repetitive, repetition_timeframe, is_tentative, username):
     mycursor = mydb.cursor()
