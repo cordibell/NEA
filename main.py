@@ -118,7 +118,9 @@ class CreateEventCommands:
         is_repetitive = self.create_event_menu.get_is_repetitive()
         repetition_timeframe = self.create_event_menu.get_repetitive_timeframe()
         is_tentative = self.create_event_menu.get_is_tentative()
-        create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, start_time, end_time, self.eventID, event_title, join_events_code.valid_title, is_repetitive, repetition_timeframe, is_tentative, self.username)
+        new_event_created = create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, start_time, end_time, self.eventID, event_title, join_events_code.valid_title, is_repetitive, repetition_timeframe, is_tentative, self.username, mydb)
+        if new_event_created:
+            self.load_calendar_menu()
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         self.create_event_menu.create_event_window.withdraw()
