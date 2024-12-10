@@ -11,6 +11,9 @@ import calendar_gui
 import create_event_gui
 import create_event_code
 
+import set_preferred_time_gui
+import set_preferred_times_code
+
 import mysql.connector
 
 # connecting to database
@@ -80,7 +83,7 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         calendarCommand = CalendarCommands(self.mydb, self.username)
         self.join_event.join_events_window.withdraw()
-        calendar_menu = calendar_gui.calendar_menu(login.login_window, calendarCommand.load_create_event_menu)
+        calendar_menu = calendar_gui.calendar_menu(login.login_window, calendarCommand.load_create_event_menu, calendarCommand.load_preferred_time_menu)
         calendar_menu.set_event_ID(self.eventID)
         calendarCommand.set_calendar_menu(calendar_menu)
 
@@ -97,6 +100,12 @@ class CalendarCommands:
         self.calendar_menu.calendar_window.withdraw()
         create_event_menu = create_event_gui.create_event_menu(login.login_window, createEventCommand.create_event, createEventCommand.load_calendar_menu)
         createEventCommand.set_create_event_menu(create_event_menu)
+    
+    def load_preferred_time_menu(self): # loads preferred time menu, hides calendar window
+        setPreferredTimeCommand = SetPreferredTimeCommands(self.mydb, self.calendar_menu, self.username)
+        self.calendar_menu.calendar_window.withdraw()
+        set_preferred_time_menu = set_preferred_time_gui.set_preferred_times_menu(login.login_window, setPreferredTimeCommand.set_preferred_time, setPreferredTimeCommand.load_calendar_menu)
+        setPreferredTimeCommand.set_set_preferred_time_menu(set_preferred_time_menu)
     
 
 class CreateEventCommands:
@@ -124,6 +133,28 @@ class CreateEventCommands:
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         self.create_event_menu.create_event_window.withdraw()
+        self.calendar_window.deiconify()
+    
+class SetPreferredTimeCommands:
+    def __init__(self, mydb, calendar_menu, username):
+        self.mydb = mydb
+        self.calendar_window = calendar_menu.calendar_window
+        self.username = username
+    
+    def set_set_preferred_time_menu(self, set_preferred_time_menu):
+        self.set_preferred_time_menu = set_preferred_time_menu
+    
+    def set_preferred_time(self):
+        start_date = self.set_preferred_time_menu.get_start_date()
+        end_date = self.set_preferred_time_menu.get_end_date()
+        start_time = self.set_preferred_time_menu.get_start_time()
+        end_time = self.set_preferred_time_menu.get_end_time()
+        preferred_time_set = set_preferred_times_code.set_preferred_time(join_events_code.validate_date_format, start_date, end_date, create_event_code.valid_time_format, start_time, end_time, self.username, self.mydb)
+        if preferred_time_set:
+            self.load_calendar_menu()
+
+    def load_calendar_menu(self): 
+        self.set_preferred_time_menu.set_preferred_time_window.withdraw()
         self.calendar_window.deiconify()
 
 if __name__ == '__main__':

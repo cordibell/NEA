@@ -12,7 +12,7 @@ class visualCalendar: # encapsulates all data from visual calendar menu
         self.eventID = eventID
 
 
-def calendar_menu(root, load_create_event_menu): # displays calendar window
+def calendar_menu(root, load_create_event_menu, load_preferred_time_menu): # displays calendar window
 
     calendar_window = tk.Toplevel(root)
     calendar_window.title("Visual Calendar")
@@ -114,7 +114,8 @@ def calendar_menu(root, load_create_event_menu): # displays calendar window
                                       activebackground="yellow",
                                       bg="orange",
                                       text="Preferred time",
-                                      font=("Arial", 26, "bold")
+                                      font=("Arial", 26, "bold"),
+                                      command=load_preferred_time_menu
                                       )
     
     forward_arrow_button = tk.Button(footer_frame,
