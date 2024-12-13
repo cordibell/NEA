@@ -67,6 +67,7 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
         self.eventID = self.join_event.get_join_event_code()
         id_exists = join_events_code.find_event_id(self.eventID, self.mydb)
         if id_exists:
+            join_events_code.check_username_in_event_members(self.eventID, self.username, self.mydb)
             self.load_calendar_menu()
         
     def collect_host_event(self): # collects data from hosting event inputs

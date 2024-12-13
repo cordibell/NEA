@@ -131,12 +131,10 @@ def convert_is_tentative(is_tentative):
         return False
     
 class userEvent:
-    def __init__(self, event_title, start_date, end_date, start_time, end_time, is_repetitive, repetition_timeframe, is_tentative, username):
+    def __init__(self, event_title, event_start, event_end, is_repetitive, repetition_timeframe, is_tentative, username):
         self.event_title = event_title
-        self.start_date = start_date
-        self.end_date = end_date
-        self.start_time = start_time
-        self.end_time = end_time
+        self.event_start = event_start
+        self.event_end = event_end
         self.is_repetitive = is_repetitive
         self.repetition_timeframe = repetition_timeframe
         self.is_tentative = is_tentative
@@ -144,8 +142,8 @@ class userEvent:
 
     def store_event_to_database(self, mydb):
         mycursor = mydb.cursor()
-        save_event_sql = "INSERT INTO USER_EVENTS (name, start_time, end_time, username, start_date, end_date, is_repetitive, repetition_timeframe, is_tentative) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        values = (self.event_title, self.start_time, self.end_time, self.username, self.start_date, self.end_date, self.is_repetitive, self.repetition_timeframe, self.is_tentative)
+        save_event_sql = "INSERT INTO USER_EVENTS (name, username, event_start, event_end, is_repetitive, repetition_timeframe, is_tentative) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        values = (self.event_title, self.username, self.event_start, self.event_end, self.is_repetitive, self.repetition_timeframe, self.is_tentative)
         mycursor.execute(save_event_sql, values)
         mydb.commit()
         print(f"Saved event {self.event_title} to database!")
@@ -176,7 +174,11 @@ def create_event(start_date, end_date, valid_date_format, start_time, end_time, 
     times_valid = validate_time(start_time, end_time, start_date, end_date)
     if not times_valid:
         return False
-    new_event = userEvent(event_title, start_date, end_date, start_time, end_time, is_repetitive, repetition_timeframe, is_tentative, username)
+    start_time = datetime.strptime(start_time, '%H:%M').time()
+    end_time = datetime.strptime(end_time, '%H:%M').time()
+    event_start = datetime.combine(start_date, start_time)
+    event_end = datetime.combine(end_date, end_time)
+    new_event = userEvent(event_title, event_start, event_end, is_repetitive, repetition_timeframe, is_tentative, username)
     saved_to_database = new_event.store_event_to_database(mydb)
     if saved_to_database:
         return True

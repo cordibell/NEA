@@ -182,6 +182,7 @@ def create_event_menu(root, create_event_command, back_command):
                                           selectcolor="green",
                                           variable=is_repetitive,
                                           value=2)
+    
     is_repetitive_label = tk.Label(border_colour_is_repetitive,
                                    text="Is repetitive?",
                                    font=("Arial", 14, "italic")

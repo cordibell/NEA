@@ -145,7 +145,28 @@ def find_event_id(eventID, mydb): # finds if the given event ID exists in the da
         return False
     else:
         print("Event ID found.")
-        return True                      
+        return True    
+
+def check_username_in_event_members(eventID, username, mydb):
+    mycursor = mydb.cursor()
+    find_username_id_sql = "SELECT username FROM EVENT_MEMBERS WHERE username=%s and eventID = %s"
+    values = (username, eventID)
+    mycursor.execute(find_username_id_sql, values) 
+    username_in_table = mycursor.fetchone()
+    if username_in_table is None:
+        print("Username not in table")
+        add_user_to_table(eventID, username, mydb)
+    else:
+        print("Username in table")  
+
+def add_user_to_table(eventID, username, mydb):
+    mycursor = mydb.cursor()
+    add_to_table_sql = "INSERT INTO EVENT_MEMBERS (username, eventID) VALUES (%s, %s)"
+    values = (username, eventID)
+    mycursor.execute(add_to_table_sql, values)
+    mydb.commit()
+    print("Saved username & event ID to database")
+
 
 class Host_event: # event hosted by a user, where they are trying to find out availability for it
     def __init__(self, event_name, timeframe, start_date, end_date, generated_code, host_username):
