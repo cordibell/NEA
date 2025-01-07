@@ -14,6 +14,9 @@ import create_event_code
 import set_preferred_time_gui
 import set_preferred_times_code
 
+import optimal_time_gui
+import calculate_optimal_time
+
 import mysql.connector
 
 # connecting to database
@@ -82,16 +85,17 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
             self.join_event.display_unique_code(generated_code)
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
-        calendarCommand = CalendarCommands(self.mydb, self.username)
+        calendarCommand = CalendarCommands(self.mydb, self.username, self.eventID)
         self.join_event.join_events_window.withdraw()
-        calendar_menu = calendar_gui.calendar_menu(login.login_window, calendarCommand.load_create_event_menu, calendarCommand.load_preferred_time_menu)
+        calendar_menu = calendar_gui.calendar_menu(login.login_window, calendarCommand.load_create_event_menu, calendarCommand.load_preferred_time_menu, calendarCommand.load_optimal_time_menu)
         calendar_menu.set_event_ID(self.eventID)
         calendarCommand.set_calendar_menu(calendar_menu)
 
 class CalendarCommands:
-    def __init__(self, mydb, username):
+    def __init__(self, mydb, username, eventID):
         self.mydb = mydb
         self.username = username
+        self.eventID = eventID
 
     def set_calendar_menu(self, calendar_menu):
         self.calendar_menu = calendar_menu
@@ -108,6 +112,13 @@ class CalendarCommands:
         set_preferred_time_menu = set_preferred_time_gui.set_preferred_times_menu(login.login_window, setPreferredTimeCommand.set_preferred_time, setPreferredTimeCommand.load_calendar_menu)
         setPreferredTimeCommand.set_set_preferred_time_menu(set_preferred_time_menu)
     
+    def load_optimal_time_menu(self): # loads optimal time menu, hides calendar window
+        optimalTimeCommand = OptimalTimeCommands(self.mydb, self.calendar_menu)
+        self.calendar_menu.calendar_window.withdraw()
+        list_of_best_times = calculate_optimal_time.get_users_in_event(self.eventID, self.mydb)
+        print(list_of_best_times)
+        optimal_time_menu = optimal_time_gui.optimal_time_menu(login.login_window, optimalTimeCommand.load_calendar_menu, list_of_best_times)
+        optimalTimeCommand.set_optimal_time_menu(optimal_time_menu)
 
 class CreateEventCommands:
     def __init__(self, mydb, calendar_menu, username):
@@ -156,6 +167,18 @@ class SetPreferredTimeCommands:
 
     def load_calendar_menu(self): 
         self.set_preferred_time_menu.set_preferred_time_window.withdraw()
+        self.calendar_window.deiconify()
+
+class OptimalTimeCommands:
+    def __init__(self, mydb, calendar_menu):
+        self.mydb = mydb
+        self.calendar_window = calendar_menu.calendar_window
+    
+    def set_optimal_time_menu(self, optimal_time_menu):
+        self.optimal_time_menu = optimal_time_menu
+    
+    def load_calendar_menu(self):
+        self.optimal_time_menu.optimal_time_window.withdraw()
         self.calendar_window.deiconify()
 
 if __name__ == '__main__':

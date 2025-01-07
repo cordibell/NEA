@@ -1,7 +1,7 @@
 # join/create events menu, created 27/08/24
 
 import tkinter as tk
-import join_events_code
+from tktooltip import ToolTip
 import mysql.connector
 from datetime import datetime
 from tkinter import messagebox
@@ -251,6 +251,17 @@ def join_events_menu(root, collect_join_event, collect_host_event): # displays j
     # Packing confirmation buttons
     confirm_join_event_button.pack(padx=20, pady=10)
     confirm_host_event_button.pack(padx=20, pady=10)
+
+    # Tooltips
+
+    ToolTip(start_date_entry_label, msg="Start date in format DD/MM/YY")
+    ToolTip(end_date_entry_label, msg="End date in format DD/MM/YY")
+
+    ToolTip(select_timeframe_label, msg="Choose a timeframe")
+
+    ToolTip(event_title_entry_label, msg="Choose a title between 1-128 characters")
+
+    ToolTip(join_event_code_entry_label, msg="Enter your 8 digit long code e.g. A123B456")
 
     return joinEvents(join_events_window, join_event_code_entry, timeframe_var, start_date_entry, end_date_entry, event_title_entry)
 

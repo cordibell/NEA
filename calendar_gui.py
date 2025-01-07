@@ -12,7 +12,7 @@ class visualCalendar: # encapsulates all data from visual calendar menu
         self.eventID = eventID
 
 
-def calendar_menu(root, load_create_event_menu, load_preferred_time_menu): # displays calendar window
+def calendar_menu(root, load_create_event_menu, load_preferred_time_menu, load_optimal_time_menu): # displays calendar window
 
     calendar_window = tk.Toplevel(root)
     calendar_window.title("Visual Calendar")
@@ -31,7 +31,8 @@ def calendar_menu(root, load_create_event_menu, load_preferred_time_menu): # dis
                                   activebackground="yellow",
                                   bg="orange",
                                   text="View optimal times",
-                                  font=("Arial", 14, "bold")
+                                  font=("Arial", 14, "bold"),
+                                  command=load_optimal_time_menu
                                   )
     
     add_event_button = tk.Button(add_edit_event_frame,

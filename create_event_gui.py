@@ -1,6 +1,7 @@
 # create event page created 21/10/24
 
 import tkinter as tk
+from tktooltip import ToolTip
 
 class createEvents:
     def __init__(self, create_event_window, start_date, end_date, start_time, end_time, event_title, is_repetitive, repetitive_timeframe_var, is_tentative_var):
@@ -302,6 +303,20 @@ def create_event_menu(root, create_event_command, back_command):
                                   command=back_command
                                   )
     back_arrow_button.pack(padx=3, pady=3)
+
+    # tooltips
+
+    ToolTip(start_date_entry_label, msg="Start date in format DD/MM/YY")
+    ToolTip(end_date_entry_label, msg="End date in format DD/MM/YY")
+    ToolTip(start_time_entry_label, msg="Start time in format HH:MM")
+    ToolTip(end_time_entry_label, msg="End time in format HH:MM")
+
+    ToolTip(create_event_title_entry_label, msg="Title between 1-128 characters")
+
+    ToolTip(is_repetitive_label, msg="Select Yes/No")
+    ToolTip(repeat_timeframe_label, msg="If selected Yes, choose one")
+
+    ToolTip(is_tentative_label, msg="Select Yes/No")
 
     return createEvents(create_event_window, start_date_entry, end_date_entry, start_time_entry, end_time_entry, create_event_title_entry, is_repetitive, repetitive_timeframe, is_tentative)
 

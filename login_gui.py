@@ -1,6 +1,6 @@
 # Login GUI module, created 17/07/24
 import tkinter as tk
-import login_code
+from tktooltip import ToolTip
 import mysql.connector
 
 mydb = mysql.connector.connect(
@@ -54,6 +54,7 @@ def login_menu(login_command, new_account_command): # contains all the widgets f
 
     border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
     border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
+
 
     # Constructing the label widgets for the titles
     existing_account_title = tk.Label(
@@ -171,6 +172,13 @@ def login_menu(login_command, new_account_command): # contains all the widgets f
     # Packing confirmation buttons
     confirm_sign_in_button.pack(padx=20, pady=10)
     confirm_create_account_button.pack(padx=20, pady=10)
+
+    # Tooltips
+    ToolTip(existing_username_entry_label, msg="Enter your username")
+    ToolTip(existing_password_entry_label, msg="Enter your password")
+
+    ToolTip(new_username_entry_label, msg="Must be between 1-128 characters")
+    ToolTip(new_password_entry_label, msg="Must be 8+ characters and contain a special character")
 
     # return login_window
     return Login(login_window, new_username_entry, new_password_entry, existing_username_entry, existing_password_entry)

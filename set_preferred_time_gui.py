@@ -1,5 +1,6 @@
 # set preferred times menu, made 10/12/24
 import tkinter as tk
+from tktooltip import ToolTip
 
 class setPreferredTime:
     def __init__(self, set_preferred_time_window, start_date, end_date, start_time, end_time):
@@ -142,6 +143,14 @@ def set_preferred_times_menu(root, set_preferred_time_command, back_command):
                                   command=back_command
                                   )
     back_arrow_button.pack(padx=3, pady=3)
+
+    # tooltips
+
+    ToolTip(start_date_entry_label, msg="Start date in format DD/MM/YY")
+    ToolTip(end_date_entry_label, msg="End date in format DD/MM/YY")
+    ToolTip(start_time_entry_label, msg="Start time in format HH:MM")
+    ToolTip(end_time_entry_label, msg="End time in format HH:MM")
+
 
     return setPreferredTime(set_preferred_time_window, start_date_entry, end_date_entry, start_time_entry, end_time_entry)
 
