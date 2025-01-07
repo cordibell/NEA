@@ -39,6 +39,15 @@ class joinEvents: # encapsulates data from joining & hosting events
     
     def display_unique_code(self, generated_code):
         messagebox.showinfo("Event code", f"Your event code is {generated_code}.")
+    
+    def invalid_date_format(self):
+        messagebox.showerror("Invalid date", "Date format must be DD/MM/YY")
+    
+    def invalid_date_logic(self):
+        messagebox.showerror("Invalid date", "Start date after end date")
+    
+    def invalid_title_length(self):
+        messagebox.showerror("Invalid title", "Title must be between 1-128 characters")
 
 # tkinter window
 

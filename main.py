@@ -45,6 +45,8 @@ class LoginCommands: # encapsulates methods to collect & process data from login
         self.is_logged_in = login_code.validate_login(self.existing_username, self.existing_password, self.mydb)
         if self.is_logged_in == True:
             self.load_join_menu()
+        elif self.is_logged_in == False:
+            self.login.incorrect_password()
     
     def load_join_menu(self): # loads next menu if username matches password & withdraws current menu
         joinEventCommand = JoinEventCommands(mydb, self.existing_username)
@@ -55,7 +57,17 @@ class LoginCommands: # encapsulates methods to collect & process data from login
     def collect_new_account(self): # collects data from new account text fields
         username = self.login.get_new_username()
         password = self.login.get_new_password()
-        login_code.saving_new_account(username, password, self.mydb)
+        saved_to_db = login_code.saving_new_account(username, password, self.mydb)
+        if saved_to_db == True:
+            self.login.made_new_account()
+        elif saved_to_db == "Length":
+            self.login.invalid_password_length()
+        elif saved_to_db == "Character":
+            self.login.invalid_password_character()
+        elif saved_to_db == "Username":
+            self.login.invalid_username_length()
+        elif saved_to_db == "Exists":
+            self.login.invalid_username_exists()
 
 
 class JoinEventCommands: # encapsulates methods to collect & process data from join event menu

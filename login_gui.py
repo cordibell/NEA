@@ -1,6 +1,7 @@
 # Login GUI module, created 17/07/24
 import tkinter as tk
 from tktooltip import ToolTip
+from tkinter import messagebox
 import mysql.connector
 
 mydb = mysql.connector.connect(
@@ -29,6 +30,24 @@ class Login: # encapsulates data from entry & window into a class to easily move
     
     def get_existing_password(self):
         return self.existing_password.get()
+    
+    def invalid_password_length(self):
+        messagebox.showerror("Invalid password", "Password must be between 8-128 characters")
+    
+    def invalid_password_character(self):
+        messagebox.showerror("Invalid password", "Password must contain a special character")
+    
+    def invalid_username_length(self):
+        messagebox.showerror("Invalid username", "Username must be between 1-128 characters")
+    
+    def invalid_username_exists(self):
+        messagebox.showerror("Invalid username", "Username already exists")
+    
+    def incorrect_password(self):
+        messagebox.showerror("Incorrect password", "Incorrect password. Try again")
+    
+    def made_new_account(self):
+        messagebox.showinfo("Made new account", "Successfully created a new account")
     
 
 def login_menu(login_command, new_account_command): # contains all the widgets for the login GUI

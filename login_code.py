@@ -12,13 +12,13 @@ mydb = mysql.connector.connect(
 def validate_new_password(password): # checks if the password is 8+ characters & contains a special character
     if (len(password) < 8) or (len(password) > 128):
         print("Password too short or too long")
-        return False
+        return "Length"
     else:
         for character in password:
             if not (character.isalpha() or character.isdigit()):
                 return True
         print("Doesn't contain special character")
-        return False
+        return "Character"
 
 def validate_new_username(username, mydb): # checks if username is between 1-128 characters & is unique
     mycursor = mydb.cursor()
@@ -34,7 +34,7 @@ def validate_new_username(username, mydb): # checks if username is between 1-128
             return True
         else:
             print("Username already exists!")
-            return False
+            return "Exists"
 
 def get_password(username, mydb): # collects the stored password for the given username in the database
     mycursor = mydb.cursor()
@@ -51,10 +51,7 @@ def get_password(username, mydb): # collects the stored password for the given u
     
 def validate_login(username, input_password, mydb): # checks if stored password matches inputted one for given account name
     account_password = get_password(username, mydb)
-    print(type(account_password))
     account_password = "".join(account_password)
-    print(f"Inputted password: {input_password}")
-    print(f"Account password: {account_password}")
     if account_password == "" or username == "":
         return False
     elif account_password == input_password:
@@ -67,10 +64,20 @@ def validate_login(username, input_password, mydb): # checks if stored password 
 def saving_new_account(username, password, mydb): # validates & saves new account data from text fields
     is_valid_password = validate_new_password(password)
     is_valid_username = validate_new_username(username, mydb)
-    if is_valid_password and is_valid_username:
+    if (is_valid_password != ("Character") and is_valid_password != "Length") and is_valid_username == True:
         new_account = Account(username, password)
         new_account.save_user_password(mydb)
         print("Saved to database")
+        return True
+    elif is_valid_password == "Length":
+        return "Length"
+    elif is_valid_password == "Character":
+        return "Character"
+    elif is_valid_username == "Exists":
+        return "Exists"
+    elif not is_valid_username:
+        return "Username"
+
 
 class Account:
     def __init__(self, username, password):
