@@ -84,6 +84,8 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
         if id_exists:
             join_events_code.check_username_in_event_members(self.eventID, self.username, self.mydb)
             self.load_calendar_menu()
+        else:
+            self.join_event.invalid_code()
         
     def collect_host_event(self): # collects data from hosting event inputs
         selected_timeframe = self.join_event.get_timeframe_var()
@@ -93,8 +95,16 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
         event_name = self.join_event.get_event_title()
         generated_code = join_events_code.generate_unique_code(self.mydb)
         valid_event = join_events_code.host_event(event_name, timeframe, start_date, end_date, generated_code, login.get_existing_username(), self.mydb)  
-        if valid_event:
+        if valid_event == True:
             self.join_event.display_unique_code(generated_code)
+        elif valid_event == "Format":
+            self.join_event.invalid_date_format()
+        elif valid_event == "Logic":
+            self.join_event.invalid_date_logic()
+        elif valid_event == "Timeframe":
+            self.join_event.invalid_date_timeframe()
+        elif valid_event == "Title":
+            self.join_event.invalid_title_length()
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         calendarCommand = CalendarCommands(self.mydb, self.username, self.eventID)

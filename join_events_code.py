@@ -34,10 +34,14 @@ def validate_dates(start_date, end_date, timeframe): # Checks if the dates are v
         start_date = datetime.strptime(start_date, '%d/%m/%y').date()
         end_date = datetime.strptime(end_date, '%d/%m/%y').date()
         valid_length = validate_timeframe_length(start_date, end_date, timeframe)
-        if valid_length:
+        if valid_length == True:
             return True
+        elif valid_length == "Logic":
+            return "Logic"
+        else:
+            return "Timeframe"
     else:
-        return False
+        return "Format"
 
 
 def validate_date_format(date): # checks if the dates are in the correct format
@@ -54,6 +58,8 @@ def validate_timeframe_length(start_date, end_date, timeframe): # checks if date
     # checking if dates are within timeframe
     if length < 0:
         print("End date before start date")
+        return "Logic"
+    elif timeframe == "Error":
         return False
     elif length > timeframe:
         print("Timeframe too short")
@@ -103,12 +109,20 @@ def find_number_of_days(start_date, end_date): # finds number of days between tw
 def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username, mydb): # creates an object for an event & saves it to database
     is_valid_dates = validate_dates(start_date, end_date, timeframe)
     is_valid_title = valid_title(event_name)
-    if is_valid_dates and is_valid_title:
+    if is_valid_dates != "Format" and is_valid_dates != "Logic" and is_valid_dates != "Timeframe" and is_valid_title:
         start_date = datetime.strptime(start_date, '%d/%m/%y').date()
         end_date = datetime.strptime(end_date, '%d/%m/%y').date()
         new_event = Host_event(event_name, timeframe, start_date, end_date, generated_code, host_username)
         new_event.save_event_info(mydb)
         return True
+    elif is_valid_dates == "Format":
+        return "Format"
+    elif is_valid_dates == "Logic":
+        return "Logic"
+    elif is_valid_dates == "Timeframe":
+        return "Timeframe"
+    elif is_valid_title == False:
+        return "Title"
     else:
         print("Can't save to database")
         return False

@@ -46,8 +46,14 @@ class joinEvents: # encapsulates data from joining & hosting events
     def invalid_date_logic(self):
         messagebox.showerror("Invalid date", "Start date after end date")
     
+    def invalid_date_timeframe(self):
+        messagebox.showerror("Invalid date", "Dates outside chosen timeframe length")
+    
     def invalid_title_length(self):
         messagebox.showerror("Invalid title", "Title must be between 1-128 characters")
+    
+    def invalid_code(self):
+        messagebox.showerror("Invalid code", "Cannot find that code")
 
 # tkinter window
 
