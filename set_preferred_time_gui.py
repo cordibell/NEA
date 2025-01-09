@@ -1,6 +1,7 @@
 # set preferred times menu, made 10/12/24
 import tkinter as tk
 from tktooltip import ToolTip
+from tkinter import messagebox
 
 class setPreferredTime:
     def __init__(self, set_preferred_time_window, start_date, end_date, start_time, end_time):
@@ -21,6 +22,21 @@ class setPreferredTime:
     
     def get_end_time(self):
         return self.end_time.get()
+
+    def invalid_date_format(self):
+        messagebox.showerror("Invalid date", "Date format must be DD/MM/YY")
+
+    def invalid_date_logic(self):
+        messagebox.showerror("Invalid date", "Start date after end date")
+    
+    def invalid_time_format(self):
+        messagebox.showerror("Invalid time", "Time format must be HH:MM")
+    
+    def invalid_time_logic(self):
+        messagebox.showerror("Invalid time", "Start time after end time")
+    
+    def error(self):
+        messagebox.showerror("Error", "Error")
 
 def set_preferred_times_menu(root, set_preferred_time_command, back_command): 
     

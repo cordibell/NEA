@@ -58,13 +58,13 @@ def validate_dates(start_date, end_date, valid_date_format, eventID): # checks i
                 return True
             else:
                 print("One of the dates not in range")      
-                return False  
+                return "Timeframe"  
         else:
             print("Start date after end date")
-            return False
+            return "Date Logic"
     else:
         print("Invalid date format")
-        return False
+        return "Date Format"
 
 def valid_time_format(time):
     try :
@@ -77,7 +77,7 @@ def valid_time_format(time):
 def start_time_before_end_time(start_time, end_time):
     return start_time <= end_time
 
-def validate_time(start_time, end_time, start_date, end_date):
+def validate_time(start_time, end_time, start_date, end_date): # validates if times are in correct format
     valid_start_time = valid_time_format(start_time)
     valid_end_time = valid_time_format(end_time)
     if valid_end_time and valid_start_time:
@@ -90,13 +90,13 @@ def validate_time(start_time, end_time, start_date, end_date):
                 return True
             else:
                 print("Start time after end time")
-                return False
+                return "Time Logic"
         else:
             print("Times valid")
             return True
     else:
         print("Invalid times")
-        return False
+        return "Time Format"
     
 def convert_repetition(is_repetitive):
     if is_repetitive == 1:
@@ -153,27 +153,33 @@ class userEvent:
     
 def create_event(start_date, end_date, valid_date_format, start_time, end_time, eventID, event_title, valid_title, is_repetitive, repetition_timeframe, is_tentative, username, mydb): # creates event in database
     dates_valid = validate_dates(start_date, end_date, valid_date_format, eventID)
-    if not dates_valid:
-        return False
+    if dates_valid == "Date Format":
+        return "Date Format"
+    elif dates_valid == "Date Logic":
+        return "Date Logic"
+    elif dates_valid == "Timeframe":
+        return "Timeframe"
     title_valid = valid_title(event_title)
     if not title_valid:
-        return False
+        return "Title"
     is_repetitive = convert_repetition(is_repetitive)
     if not is_repetitive:
-        return False
+        return "Repetition"
     repetition_timeframe = convert_repetition_timeframe(is_repetitive, repetition_timeframe)
     if not repetition_timeframe:
-        return False
+        return "Repetition"
     print(is_repetitive, repetition_timeframe)
     is_tentative = convert_is_tentative(is_tentative)
     print(is_tentative)
     if not is_tentative:
-        return False
+        return "Tentative"
     start_date = convert_date_format(start_date)
     end_date = convert_date_format(end_date)
     times_valid = validate_time(start_time, end_time, start_date, end_date)
-    if not times_valid:
-        return False
+    if times_valid == "Time Format":
+        return "Time Format"
+    elif times_valid == "Time Logic":
+        return "Time Logic"
     start_time = datetime.strptime(start_time, '%H:%M').time()
     end_time = datetime.strptime(end_time, '%H:%M').time()
     event_start = datetime.combine(start_date, start_time)

@@ -162,8 +162,24 @@ class CreateEventCommands:
         repetition_timeframe = self.create_event_menu.get_repetitive_timeframe()
         is_tentative = self.create_event_menu.get_is_tentative()
         new_event_created = create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, start_time, end_time, self.eventID, event_title, join_events_code.valid_title, is_repetitive, repetition_timeframe, is_tentative, self.username, mydb)
-        if new_event_created:
+        if new_event_created == True:
             self.load_calendar_menu()
+        elif new_event_created == "Date Format":
+            self.create_event_menu.invalid_date_format()
+        elif new_event_created == "Date Logic":
+            self.create_event_menu.invalid_date_logic()
+        elif new_event_created == "Timeframe":
+            self.create_event_menu.invalid_date_timeframe()
+        elif new_event_created == "Time Format":
+            self.create_event_menu.invalid_time_format()
+        elif new_event_created == "Time Logic":
+            self.create_event_menu.invalid_time_logic()
+        elif new_event_created == "Title":
+            self.create_event_menu.invalid_title_length()
+        elif new_event_created == "Repetition":
+            self.create_event_menu.invalid_repetition()
+        elif new_event_created == "Tentative":
+            self.create_event_menu.invalid_tentability()
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         self.create_event_menu.create_event_window.withdraw()
@@ -184,8 +200,18 @@ class SetPreferredTimeCommands:
         start_time = self.set_preferred_time_menu.get_start_time()
         end_time = self.set_preferred_time_menu.get_end_time()
         preferred_time_set = set_preferred_times_code.set_preferred_time(join_events_code.validate_date_format, start_date, end_date, create_event_code.valid_time_format, start_time, end_time, self.username, self.mydb)
-        if preferred_time_set:
+        if preferred_time_set == True:
             self.load_calendar_menu()
+        elif preferred_time_set == "Date Format":
+            self.set_preferred_time_menu.invalid_date_format()
+        elif preferred_time_set == "Date Logic":
+            self.set_preferred_time_menu.invalid_date_logic()
+        elif preferred_time_set == "Time Format":
+            self.set_preferred_time_menu.invalid_time_format()
+        elif preferred_time_set == "Time Logic":
+            self.set_preferred_time_menu.invalid_time_logic()
+        elif preferred_time_set == False:
+            self.set_preferred_time_menu.error()
 
     def load_calendar_menu(self): 
         self.set_preferred_time_menu.set_preferred_time_window.withdraw()
