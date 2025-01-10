@@ -46,7 +46,7 @@ def optimal_time_menu(root, confirm_time, list_of_best_timeslots):
             border_colour_time_cell = tk.Frame(border_colour_optimal_times, bg="black")
             optimal_time_cell = tk.Frame(border_colour_time_cell, bg=backgroundcolour)
             timeslot_time = tk.Label(border_colour_time_cell,
-                                text=f"{list_of_best_timeslots[count].start}-{list_of_best_timeslots[count].end}",
+                                text=f"{list_of_best_timeslots[count].start.strftime('%Y-%m-%d %H:%M')}-{list_of_best_timeslots[count].end.strftime('%Y-%m-%d %H:%M')}",
                                 font=("Arial", 10, "bold"),
                                 bg=backgroundcolour
             )

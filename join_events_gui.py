@@ -7,7 +7,7 @@ from datetime import datetime
 from tkinter import messagebox
 
 mydb = mysql.connector.connect(
-    host="localhost",
+    host="10.0.2.214",
     user="standardUser",
     password="StandardPassword123!",
     database="ComputerScienceNEA"
