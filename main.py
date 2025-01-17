@@ -164,6 +164,7 @@ class CreateEventCommands:
         new_event_created = create_event_code.create_event(start_date, end_date, join_events_code.validate_date_format, start_time, end_time, self.eventID, event_title, join_events_code.valid_title, is_repetitive, repetition_timeframe, is_tentative, self.username, mydb)
         if new_event_created == True:
             self.load_calendar_menu()
+        # error message pop-up boxes
         elif new_event_created == "Date Format":
             self.create_event_menu.invalid_date_format()
         elif new_event_created == "Date Logic":
