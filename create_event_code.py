@@ -22,7 +22,6 @@ def find_host_start_date(event_ID): # collects host start date from database
     mycursor.execute(find_start_date_sql, value)
     host_start_date = mycursor.fetchone()
     host_start_date = host_start_date[0].date()
-    print(host_start_date)
     return host_start_date 
 
 def find_host_end_date(event_ID):# collects host end date from database
@@ -32,7 +31,6 @@ def find_host_end_date(event_ID):# collects host end date from database
     mycursor.execute(find_end_date_sql, value)
     host_end_date = mycursor.fetchone()
     host_end_date = host_end_date[0].date()
-    print(host_end_date)
     return host_end_date
 
 def date_in_range(date, host_start_date, host_end_date): # finds if date is within host range
@@ -54,17 +52,13 @@ def validate_dates(start_date, end_date, valid_date_format, eventID): # checks i
             start_date_in_range = date_in_range(start_date, host_start_date, host_end_date)
             end_date_in_range = date_in_range(end_date, host_start_date, host_end_date)
             if start_date_in_range and end_date_in_range:
-                print("Both dates in range")
-                return True
+                return True # both dates in range
             else:
-                print("One of the dates not in range")      
-                return "Timeframe"  
+                return "Timeframe" # dates not in timeframe range
         else:
-            print("Start date after end date")
-            return "Date Logic"
+            return "Date Logic" # start date after end date
     else:
-        print("Invalid date format")
-        return "Date Format"
+        return "Date Format" # invalid date format
 
 def valid_time_format(time):
     try :
@@ -85,18 +79,14 @@ def validate_time(start_time, end_time, start_date, end_date): # validates if ti
         end_time = datetime.strptime(end_time, '%H:%M').time()
         if start_date == end_date:
             start_before_end_time = start_time_before_end_time(start_time, end_time)
-            if start_before_end_time:
-                print("Both times valid")
+            if start_before_end_time: # valid time (same day)
                 return True
             else:
-                print("Start time after end time")
-                return "Time Logic"
+                return "Time Logic" # invalid time (same day)
         else:
-            print("Times valid")
-            return True
+            return True # valid time (not same day)
     else:
-        print("Invalid times")
-        return "Time Format"
+        return "Time Format" # incorrect format
     
 def convert_repetition(is_repetitive):
     if is_repetitive == 1:
@@ -146,7 +136,6 @@ class userEvent:
         values = (self.event_title, self.username, self.event_start, self.event_end, self.is_repetitive, self.repetition_timeframe, self.is_tentative)
         mycursor.execute(save_event_sql, values)
         mydb.commit()
-        print(f"Saved event {self.event_title} to database!")
         return True
     
 
@@ -168,9 +157,7 @@ def create_event(start_date, end_date, valid_date_format, start_time, end_time, 
     repetition_timeframe = convert_repetition_timeframe(is_repetitive, repetition_timeframe)
     if not repetition_timeframe:
         return "Repetition"
-    print(is_repetitive, repetition_timeframe)
     is_tentative = convert_is_tentative(is_tentative)
-    print(is_tentative)
     if not is_tentative:
         return "Tentative"
     start_date = convert_date_format(start_date)

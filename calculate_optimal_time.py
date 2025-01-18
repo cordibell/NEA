@@ -39,7 +39,6 @@ class timeSlot: # each hour timeslot that the event could possibly be in
         self.score += 2
     
     def decrease_score(self): # when preferred time
-        print("Decreasing score")
         self.score -= 2
     
 
@@ -51,12 +50,9 @@ def get_users_in_event(eventID, mydb): # collects all the users who are part of 
     mycursor.execute(find_users_sql, values)
     users_in_event = mycursor.fetchall() 
     list_of_users_in_event = []   
-    print(users_in_event)
     for user in users_in_event:
-        print(user)
         userObject = User(user[0])
         list_of_users_in_event.append(userObject)
-    print(list_of_users_in_event)
     list_of_event_objects = find_events_from_user_in_database(list_of_users_in_event, mydb)
     list_of_timeslots = find_timeslots_range(eventID, mydb)
     calculate_timeslot_score_from_events(list_of_timeslots, list_of_event_objects)
@@ -75,7 +71,6 @@ def find_events_from_user_in_database(list_of_users_in_event, mydb): # finds all
         event_found = mycursor.fetchall()
         list(event_found)
         list_of_events_found.append(event_found)
-    print(list_of_events_found)
     list_of_event_objects = convert_events_into_objects(list_of_events_found)
     return list_of_event_objects
 
@@ -122,7 +117,6 @@ def calculate_timeslot_score_from_events(list_of_timeslots, list_of_event_object
             if (event.end >= timeslot.start and event.start <= timeslot.end) or (event.end <= timeslot.end and event.start >= timeslot.start):
                 if event.is_tentative == "Yes":
                     timeslot.increase_score_by_2()
-                    print(f"Start: {event.start}, End: {event.end} is tentative")
                 else:
                     timeslot.increase_score_by_3()
 
@@ -133,9 +127,7 @@ def find_preferred_times(list_of_users_in_event, mydb): # finds preferred times 
         values = (user.username, )
         mycursor.execute(find_preferred_times_sql, values)
         preferred_times = mycursor.fetchone()
-        print(preferred_times)
         user.set_preferred_times(preferred_times[0], preferred_times[1])
-        print(user.preferred_start, user.preferred_end)
 
 
 def calculate_timeslot_score_from_preferred_times(list_of_users_in_event, list_of_timeslots): # adjusts timeslot score if someone's preferred time is during it
@@ -145,7 +137,6 @@ def calculate_timeslot_score_from_preferred_times(list_of_users_in_event, list_o
                 continue
             elif (user.preferred_end >= timeslot.start and user.preferred_start <= timeslot.end) or (user.preferred_end <= timeslot.end and user.preferred_start >= timeslot.start):
                 timeslot.decrease_score()
-        print(f"Start: {timeslot.start}. End: {timeslot.end}, Score: {timeslot.score}")
 
 def find_best_timeslots(list_of_timeslots): # finds best 1 hour timeslots
     best_timeslots = []
@@ -159,11 +150,7 @@ def find_best_timeslots(list_of_timeslots): # finds best 1 hour timeslots
             if lowest_score[0][1] >= timeslot[0][1]: # checking every item in list to see if score is lower than lowest
                 lowest_score = timeslot
         best_timeslots.append(lowest_score[0][0])
-        print(lowest_score[0][1])
         list_of_timeslot_scores_as_tuple.remove(lowest_score)
-    print("Best timeslots!")
-    for timeslot in best_timeslots:
-        print(f"Start: {timeslot.start}, End: {timeslot.end}, Score: {timeslot.score}")
     return best_timeslots
 
 

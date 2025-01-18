@@ -25,14 +25,11 @@ def validate_dates(valid_date_format, start_date, end_date): # checks if dates a
         end_date = convert_date_format(end_date)
         start_before_end = start_date_before_end_date(start_date, end_date)
         if start_before_end:
-            print("Both dates valid")
-            return True
+            return True # dates valid
         else:
-            print("End date before start")
-            return "Date Logic"
+            return "Date Logic" # start date after end date
     else:
-        print("Invalid date format")
-        return "Date Format"
+        return "Date Format" # invalid date format
     
 def start_time_before_end_time(start_time, end_time):
     return start_time <= end_time
@@ -46,17 +43,13 @@ def validate_time(valid_time_format, start_time, end_time, start_date, end_date)
         if start_date == end_date:
             start_before_end_time = start_time_before_end_time(start_time, end_time)
             if start_before_end_time:
-                print("Both times valid")
-                return True
+                return True # times valid (same day)
             else:
-                print("Start time after end time")
-                return "Time Logic"
+                return "Time Logic" # times invalid (same day)
         else:
-            print("Times valid")
-            return True
+            return True # times valid (different day)
     else:
-        print("Invalid times")
-        return "Time Format"
+        return "Time Format" # invalid time format
 
 def set_preferred_time(valid_date_format, start_date, end_date, valid_time_format, start_time, end_time, username, mydb): # called when confirmation button pressed
     dates_valid = validate_dates(valid_date_format, start_date, end_date)
@@ -69,7 +62,6 @@ def set_preferred_time(valid_date_format, start_date, end_date, valid_time_forma
             end_time = datetime.strptime(end_time, '%H:%M').time()
             preferred_start = datetime.combine(start_date, start_time)
             preferred_end = datetime.combine(end_date, end_time)
-            print(f"Preferred start: {preferred_start}\nPreferred end: {preferred_end}")
             saved_to_database = save_to_database(preferred_start, preferred_end, username, mydb)
             if saved_to_database:
                 return True
@@ -86,7 +78,6 @@ def save_to_database(preferred_start, preferred_end, username, mydb): # saves pr
     values = (preferred_start, preferred_end, username)
     mycursor.execute(save_time_sql, values)
     mydb.commit()
-    print(f"Saved preferred time to database")
     return True
 
     

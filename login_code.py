@@ -11,30 +11,26 @@ mydb = mysql.connector.connect(
 
 def validate_new_password(password): # checks if the password is 8+ characters & contains a special character
     if (len(password) < 8) or (len(password) > 128):
-        print("Password too short or too long")
-        return "Length"
+        return "Length" # invalid password length
     else:
         for character in password:
             if not (character.isalpha() or character.isdigit()):
-                return True
-        print("Doesn't contain special character")
-        return "Character"
+                return True # password contains special character
+        return "Character" # password doesn't contain special character
 
 def validate_new_username(username, mydb): # checks if username is between 1-128 characters & is unique
     mycursor = mydb.cursor()
     if (len(username) == 0 or len(username) > 128):
-        print("Username too short or too long")
-        return False
+        return False # invalid username length
     else:
         username_exists_sql = "SELECT * FROM USERS WHERE username=%s"
         value = (username, )
         mycursor.execute(username_exists_sql, value)
         myresult = mycursor.fetchone()
         if myresult is None:
-            return True
+            return True # username doesn't exist
         else:
-            print("Username already exists!")
-            return "Exists"
+            return "Exists" # username already exists
 
 def get_password(username, mydb): # collects the stored password for the given username in the database
     mycursor = mydb.cursor()
@@ -43,11 +39,9 @@ def get_password(username, mydb): # collects the stored password for the given u
     mycursor.execute(check_password_sql, value)
     password = mycursor.fetchone()
     if password is None:
-        print("No password or username doesn't exist")
-        return ""
+        return "" # when no password or username doesn't exist
     else:
-        print("Password found!")
-        return password
+        return password # found password
     
 def validate_login(username, input_password, mydb): # checks if stored password matches inputted one for given account name
     account_password = get_password(username, mydb)
@@ -55,11 +49,9 @@ def validate_login(username, input_password, mydb): # checks if stored password 
     if account_password == "" or username == "":
         return False
     elif account_password == input_password:
-        print("Password matches, logging in...")
-        return True
+        return True # right password, logging in
     else:
-        print("Incorrect password")
-        return False
+        return False # incorrect password
 
 def saving_new_account(username, password, mydb): # validates & saves new account data from text fields
     is_valid_password = validate_new_password(password)
@@ -67,16 +59,15 @@ def saving_new_account(username, password, mydb): # validates & saves new accoun
     if (is_valid_password != ("Character") and is_valid_password != "Length") and is_valid_username == True:
         new_account = Account(username, password)
         new_account.save_user_password(mydb)
-        print("Saved to database")
         return True
     elif is_valid_password == "Length":
-        return "Length"
+        return "Length" # password wrong length
     elif is_valid_password == "Character":
-        return "Character"
+        return "Character" # password doesn't have a special character
     elif is_valid_username == "Exists":
-        return "Exists"
+        return "Exists" # username isn't unique
     elif not is_valid_username:
-        return "Username"
+        return "Username" # username is wrong length
 
 
 class Account:

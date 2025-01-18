@@ -32,7 +32,6 @@ def optimal_time_menu(root, confirm_time, list_of_best_timeslots):
     border_colour_title.pack(padx=3, pady=3)
 
     # setting up optimal times information grid
-    print(list_of_best_timeslots)
 
     count = 0
     for i in range(3): # rows

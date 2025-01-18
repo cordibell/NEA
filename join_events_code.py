@@ -57,19 +57,15 @@ def validate_timeframe_length(start_date, end_date, timeframe): # checks if date
     timeframe = convert_timeframe(start_date, end_date, timeframe)
     # checking if dates are within timeframe
     if length < 0:
-        print("End date before start date")
-        return "Logic"
+        return "Logic" # end date before start date
     elif timeframe == "Error":
         return False
-    elif length > timeframe:
-        print("Timeframe too short")
+    elif length > timeframe: # timeframe too short
         return False
     elif length < timeframe:
-        print("Timeframe too long")
-        return False
+        return False # timeframe too long
     else:
-        print("Valid timeframe!")
-        return True
+        return True # valid timeframe length
     
 def convert_timeframe(start_date, end_date, timeframe): # converts timeframes to integers
     if timeframe == "1 day":
@@ -93,17 +89,13 @@ def convert_timeframe(start_date, end_date, timeframe): # converts timeframes to
     return timeframe
 
 def valid_title(event_name): # validates if title is between 1-128 characters
-    print(f"Length of string: {len(event_name)}")
     if len(event_name) > 128 or len(event_name) < 1:
-        print("Invalid title")
-        return False
+        return False # invalid title length
     else:
-        print("Valid title")
-        return True
+        return True # valid title length
 
 def find_number_of_days(start_date, end_date): # finds number of days between two dates
     length = end_date-start_date
-    print(f"Distance between dates: {length.days}")
     return length.days
 
 def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username, mydb): # creates an object for an event & saves it to database
@@ -116,16 +108,15 @@ def host_event(event_name, timeframe, start_date, end_date, generated_code, host
         new_event.save_event_info(mydb)
         return True
     elif is_valid_dates == "Format":
-        return "Format"
+        return "Format" # invalid date format
     elif is_valid_dates == "Logic":
-        return "Logic"
+        return "Logic" # start date after end date
     elif is_valid_dates == "Timeframe":
-        return "Timeframe"
+        return "Timeframe" # dates not within chosen timeframe
     elif is_valid_title == False:
-        return "Title"
+        return "Title" # title wrong length
     else:
-        print("Can't save to database")
-        return False
+        return False # couldnt save to database
 
 def generate_unique_code(mydb): # generates 8 digit alphanumeric random code
     is_unique = False
@@ -133,7 +124,6 @@ def generate_unique_code(mydb): # generates 8 digit alphanumeric random code
         length = 8
         chars = string.ascii_uppercase + string.digits
         generated_code = ''.join(random.choices(chars, k=length))
-        print(f"Generated code is {generated_code}")
         is_unique = check_code_unique(generated_code, mydb)
     return generated_code
 
@@ -155,11 +145,9 @@ def find_event_id(eventID, mydb): # finds if the given event ID exists in the da
     mycursor.execute(find_event_id_sql, value)
     myresult = mycursor.fetchone()
     if myresult is None:
-        print("Event ID can't be found")
-        return False
+        return False # can't find event ID
     else:
-        print("Event ID found.")
-        return True    
+        return True  # found event ID  
 
 def check_username_in_event_members(eventID, username, mydb):
     mycursor = mydb.cursor()
@@ -168,10 +156,7 @@ def check_username_in_event_members(eventID, username, mydb):
     mycursor.execute(find_username_id_sql, values) 
     username_in_table = mycursor.fetchone()
     if username_in_table is None:
-        print("Username not in table")
-        add_user_to_table(eventID, username, mydb)
-    else:
-        print("Username in table")  
+        add_user_to_table(eventID, username, mydb) # adding new user to table
 
 def add_user_to_table(eventID, username, mydb):
     mycursor = mydb.cursor()
@@ -179,8 +164,6 @@ def add_user_to_table(eventID, username, mydb):
     values = (username, eventID)
     mycursor.execute(add_to_table_sql, values)
     mydb.commit()
-    print("Saved username & event ID to database")
-
 
 class Host_event: # event hosted by a user, where they are trying to find out availability for it
     def __init__(self, event_name, timeframe, start_date, end_date, generated_code, host_username):
@@ -197,6 +180,5 @@ class Host_event: # event hosted by a user, where they are trying to find out av
         values = (self.generated_code, self.event_name, self.host_username, self.start_date, self.end_date)
         mycursor.execute(save_event_sql, values)
         mydb.commit()
-        print("Saved event info to database")
 
 mydb.close()

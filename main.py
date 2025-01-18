@@ -138,7 +138,6 @@ class CalendarCommands:
         optimalTimeCommand = OptimalTimeCommands(self.mydb, self.calendar_menu)
         self.calendar_menu.calendar_window.withdraw()
         list_of_best_times = calculate_optimal_time.get_users_in_event(self.eventID, self.mydb)
-        print(list_of_best_times)
         optimal_time_menu = optimal_time_gui.optimal_time_menu(login.login_window, optimalTimeCommand.load_calendar_menu, list_of_best_times)
         optimalTimeCommand.set_optimal_time_menu(optimal_time_menu)
 
