@@ -142,14 +142,14 @@ def set_preferred_times_menu(root, set_preferred_time_command, back_command):
 
     # confirmation button & back button
 
-    confirm_create_event_button = tk.Button(set_preferred_time_frame,
+    confirm_set_preferred_times_button = tk.Button(set_preferred_time_frame,
                                 activebackground="green",
                                 bg="red",
                                 text="Set preferred times",
                                 font=("Arial", 14, "bold"),
                                 command=set_preferred_time_command
     )
-    confirm_create_event_button.pack(padx=3, pady=3)
+    confirm_set_preferred_times_button.pack(padx=3, pady=3)
 
     back_arrow_button = tk.Button(set_preferred_time_frame,
                                   activebackground="yellow",
