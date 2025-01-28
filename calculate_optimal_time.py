@@ -114,7 +114,7 @@ def create_timeslots(start_date, end_date): # creates timeslot objects for each 
 def calculate_timeslot_score_from_events(list_of_timeslots, list_of_event_objects): # calculates timeslot score based on if an event is during it
     for timeslot in list_of_timeslots:
         for event in list_of_event_objects:
-            if (event.end >= timeslot.start and event.start <= timeslot.end) or (event.end <= timeslot.end and event.start >= timeslot.start):
+            if (event.end >= timeslot.end and event.start <= timeslot.start) or (event.end <= timeslot.end and event.start >= timeslot.start):
                 if event.is_tentative == "Yes":
                     timeslot.increase_score_by_2()
                 else:
@@ -135,7 +135,7 @@ def calculate_timeslot_score_from_preferred_times(list_of_users_in_event, list_o
         for user in list_of_users_in_event:
             if (user.preferred_end or user.preferred_start) is None:
                 continue
-            elif (user.preferred_end >= timeslot.start and user.preferred_start <= timeslot.end) or (user.preferred_end <= timeslot.end and user.preferred_start >= timeslot.start):
+            elif (user.preferred_end >= timeslot.end and user.preferred_start <= timeslot.start) or (user.preferred_end <= timeslot.end and user.preferred_start >= timeslot.start):
                 timeslot.decrease_score()
 
 def find_best_timeslots(list_of_timeslots): # finds best 1 hour timeslots

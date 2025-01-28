@@ -149,7 +149,7 @@ def find_event_id(eventID, mydb): # finds if the given event ID exists in the da
     else:
         return True  # found event ID  
 
-def check_username_in_event_members(eventID, username, mydb):
+def check_username_in_event_members(eventID, username, mydb): # checks if username & event ID are already in EVENT_MEMBERS entity
     mycursor = mydb.cursor()
     find_username_id_sql = "SELECT username FROM EVENT_MEMBERS WHERE username=%s and eventID = %s"
     values = (username, eventID)
