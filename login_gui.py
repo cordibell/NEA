@@ -68,11 +68,11 @@ def login_menu(login_command, new_account_command): # contains all the widgets f
     border_colour_existing_account = tk.Frame(existing_account_frame, bg="red")
     border_colour_create_account = tk.Frame(create_account_frame, bg="red")
 
-    border_colour_existing_username = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_existing_password = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_existing_username = tk.Frame(existing_account_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_existing_password = tk.Frame(existing_account_frame, highlightbackground="orange", highlightthickness=2)
 
-    border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="orange", highlightthickness=2)
 
 
     # Constructing the label widgets for the titles

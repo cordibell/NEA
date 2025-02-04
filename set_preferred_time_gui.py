@@ -52,13 +52,13 @@ def set_preferred_times_menu(root, set_preferred_time_command, back_command):
 
     date_frame = tk.Frame(set_preferred_time_frame)
 
-    border_colour_start_date = tk.Frame(date_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_end_date = tk.Frame(date_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_start_date = tk.Frame(date_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_end_date = tk.Frame(date_frame, highlightbackground="orange", highlightthickness=2)
 
     time_frame = tk.Frame(set_preferred_time_frame)
 
-    border_colour_start_time = tk.Frame(time_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_end_time = tk.Frame(time_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_start_time = tk.Frame(time_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_end_time = tk.Frame(time_frame, highlightbackground="orange", highlightthickness=2)
 
     # creating page title
 

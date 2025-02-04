@@ -76,16 +76,16 @@ def join_events_menu(root, collect_join_event, collect_host_event): # displays j
     border_colour_join_event = tk.Frame(join_event_frame, bg="red")
     border_colour_host_event = tk.Frame(host_event_frame, bg="red")
 
-    border_colour_join_event_entry = tk.Frame(join_event_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_join_event_entry = tk.Frame(join_event_frame, highlightbackground="orange", highlightthickness=2)
 
-    border_colour_select_timeframe = tk.Frame(host_event_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_select_timeframe = tk.Frame(host_event_frame, highlightbackground="orange", highlightthickness=2)
 
     select_dates_frame = tk.Frame(host_event_frame)
 
-    border_colour_start_date = tk.Frame(select_dates_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_end_date = tk.Frame(select_dates_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_start_date = tk.Frame(select_dates_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_end_date = tk.Frame(select_dates_frame, highlightbackground="orange", highlightthickness=2)
 
-    border_colour_event_title = tk.Frame(host_event_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_event_title = tk.Frame(host_event_frame, highlightbackground="orange", highlightthickness=2)
 
     # Constructing the label widgets for the titles
     join_event_title = tk.Label(

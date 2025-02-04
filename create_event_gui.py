@@ -84,19 +84,19 @@ def create_event_menu(root, create_event_command, back_command):
 
     date_time_frame = tk.Frame(create_event_frame)
 
-    border_colour_start_date = tk.Frame(date_time_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_end_date = tk.Frame(date_time_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_start_time = tk.Frame(date_time_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_end_time = tk.Frame(date_time_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_start_date = tk.Frame(date_time_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_end_date = tk.Frame(date_time_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_start_time = tk.Frame(date_time_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_end_time = tk.Frame(date_time_frame, highlightbackground="orange", highlightthickness=2)
 
     border_colour_event_title = tk.Frame(create_event_frame, highlightbackground="red", highlightthickness=2)
 
     repetitive_frame = tk.Frame(create_event_frame)
 
-    border_colour_is_repetitive = tk.Frame(repetitive_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_repeat_timeframe = tk.Frame(repetitive_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_is_repetitive = tk.Frame(repetitive_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_repeat_timeframe = tk.Frame(repetitive_frame, highlightbackground="orange", highlightthickness=2)
 
-    border_colour_is_tentative = tk.Frame(create_event_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_is_tentative = tk.Frame(create_event_frame, highlightbackground="orange", highlightthickness=2)
 
     # adding in title
 
