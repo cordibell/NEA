@@ -14,7 +14,7 @@ mydb = mysql.connector.connect(
     database="ComputerScienceNEA"
 )
 
-def find_timeframe(selected_timeframe):
+def find_timeframe(selected_timeframe): # converts the timeframe IntVar into strings for database
     if selected_timeframe == 1:
         timeframe = "1 day"
     elif selected_timeframe == 2:
@@ -27,24 +27,25 @@ def find_timeframe(selected_timeframe):
         timeframe="Error"
     return timeframe
 
-def validate_dates(start_date, end_date, timeframe): # Checks if the dates are valid in the given timeframe
+def validate_dates(start_date, end_date, timeframe): # Checks if the dates are valid in the given host event's timeframe
     valid_start_date = validate_date_format(start_date)
     valid_end_date = validate_date_format(end_date)
     if valid_start_date and valid_end_date:
+        # puts them in correct datetime object format
         start_date = datetime.strptime(start_date, '%d/%m/%y').date()
         end_date = datetime.strptime(end_date, '%d/%m/%y').date()
         valid_length = validate_timeframe_length(start_date, end_date, timeframe)
         if valid_length == True:
             return True
-        elif valid_length == "Logic":
+        elif valid_length == "Logic": # logic error - start date after end date
             return "Logic"
         else:
-            return "Timeframe"
+            return "Timeframe" # timeframe error - timeframe is wrong for dates given
     else:
         return "Format"
 
 
-def validate_date_format(date): # checks if the dates are in the correct format
+def validate_date_format(date): # checks if the dates are in the correct format (DD/MM/YY)
     try:
         valid_date = datetime.strptime(date, '%d/%m/%y').date()
     except:
@@ -67,7 +68,7 @@ def validate_timeframe_length(start_date, end_date, timeframe): # checks if date
     else:
         return True # valid timeframe length
     
-def convert_timeframe(start_date, end_date, timeframe): # converts timeframes to integers
+def convert_timeframe(start_date, end_date, timeframe): # converts timeframes to integers for length
     if timeframe == "1 day":
         timeframe = 1
     elif timeframe == "1 week":
@@ -82,7 +83,7 @@ def convert_timeframe(start_date, end_date, timeframe): # converts timeframes to
             if month <= 11: # year wont overlap
                 timeframe += calendar._monthlen(year, month)
                 month += 1
-            elif month == 12:
+            elif month == 12:# year will change
                 timeframe += calendar._monthlen(year, 1)
                 year += 1
                 month = 1
@@ -98,14 +99,17 @@ def find_number_of_days(start_date, end_date): # finds number of days between tw
     length = end_date-start_date
     return length.days
 
-def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username, mydb): # creates an object for an event & saves it to database
+def host_event(event_name, timeframe, start_date, end_date, generated_code, host_username, mydb): 
+    # creates an object for an event & saves it to database
     is_valid_dates = validate_dates(start_date, end_date, timeframe)
     is_valid_title = valid_title(event_name)
     if is_valid_dates != "Format" and is_valid_dates != "Logic" and is_valid_dates != "Timeframe" and is_valid_title:
+        # valid date&time so converts dates to datetime object
         start_date = datetime.strptime(start_date, '%d/%m/%y').date()
         end_date = datetime.strptime(end_date, '%d/%m/%y').date()
+        # instantiates an object of Host_event class
         new_event = Host_event(event_name, timeframe, start_date, end_date, generated_code, host_username)
-        new_event.save_event_info(mydb)
+        new_event.save_event_info(mydb) # saves to database
         return True
     elif is_valid_dates == "Format":
         return "Format" # invalid date format
@@ -166,6 +170,9 @@ def add_user_to_table(eventID, username, mydb):
     mydb.commit()
 
 class Host_event: # event hosted by a user, where they are trying to find out availability for it
+    '''
+    This class contains all information about a Host Event
+    '''
     def __init__(self, event_name, timeframe, start_date, end_date, generated_code, host_username):
         self.event_name = event_name
         self.timeframe = timeframe
@@ -174,7 +181,7 @@ class Host_event: # event hosted by a user, where they are trying to find out av
         self.generated_code = generated_code
         self.host_username = host_username
 
-    def save_event_info(self, mydb): # saves collected data to database
+    def save_event_info(self, mydb): # saves collected data to database entity "HOST_EVENTS"
         mycursor = mydb.cursor()
         save_event_sql = "INSERT INTO HOST_EVENTS (eventID, event_name, host_username, start_date, end_date) VALUES (%s, %s, %s, %s, %s)"
         values = (self.generated_code, self.event_name, self.host_username, self.start_date, self.end_date)

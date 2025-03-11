@@ -4,14 +4,10 @@ from tktooltip import ToolTip
 from tkinter import messagebox
 import mysql.connector
 
-mydb = mysql.connector.connect(
-    host="10.0.2.214",
-    user="standardUser",
-    password="StandardPassword123!",
-    database="ComputerScienceNEA"
-)
-
 class Login: # encapsulates data from entry & window into a class to easily move it to main.py
+    '''
+    This class encapsulates data from the entry boxes as well as error messages for the window.
+    '''
     def __init__(self, login_window, new_username, new_password, existing_username, existing_password):
         self.login_window = login_window
         self.new_username = new_username
@@ -31,6 +27,8 @@ class Login: # encapsulates data from entry & window into a class to easily move
     def get_existing_password(self):
         return self.existing_password.get()
     
+    # Error message methods
+
     def invalid_password_length(self):
         messagebox.showerror("Invalid password", "Password must be between 8-128 characters")
     
@@ -51,8 +49,9 @@ class Login: # encapsulates data from entry & window into a class to easily move
     
 
 def login_menu(login_command, new_account_command): # contains all the widgets for the login GUI
-
-
+    '''
+    This function contains all of the widgets for the login menu.
+    '''
     # tkinter windows
 
     login_window = tk.Tk()
@@ -192,7 +191,7 @@ def login_menu(login_command, new_account_command): # contains all the widgets f
     confirm_sign_in_button.pack(padx=20, pady=10)
     confirm_create_account_button.pack(padx=20, pady=10)
 
-    # Tooltips
+    # Tooltips to show the user the expected inputs
     ToolTip(existing_username_entry_label, msg="Enter your username")
     ToolTip(existing_password_entry_label, msg="Enter your password")
 

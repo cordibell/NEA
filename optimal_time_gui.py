@@ -2,11 +2,16 @@
 import tkinter as tk
 
 class optimalTimes:
+    '''
+    This class contains all information to do with the optimal time window.
+    '''
     def __init__(self, optimal_time_window):
         self.optimal_time_window = optimal_time_window
 
 def optimal_time_menu(root, confirm_time, list_of_best_timeslots):
-
+    '''
+    This function contains all the Tkinter widgets for the optimal time window.
+    '''
     optimal_time_window = tk.Toplevel(root)
     optimal_time_window.title("View optimal times")
     optimal_time_window.geometry("1050x800")
@@ -34,8 +39,8 @@ def optimal_time_menu(root, confirm_time, list_of_best_timeslots):
     # setting up optimal times information grid
 
     count = 0
-    for i in range(3): # rows
-        for j in range(3): # columns
+    for i in range(3): # iterating over rows
+        for j in range(3): # iterating over columns
             if count<=2: # colour coding based on recommendation
                 backgroundcolour = "green"
             elif count <= 5:

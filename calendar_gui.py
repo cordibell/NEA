@@ -5,6 +5,9 @@ import tkinter as tk
 # tkinter window
 
 class visualCalendar: # encapsulates all data from visual calendar menu
+    '''
+    This class contains all information about the visual calendar menu.
+    '''
     def __init__(self, calendar_window):
         self.calendar_window = calendar_window
     
@@ -13,7 +16,9 @@ class visualCalendar: # encapsulates all data from visual calendar menu
 
 
 def calendar_menu(root, load_create_event_menu, load_preferred_time_menu, load_optimal_time_menu): # displays calendar window
-
+    '''
+    This function contains all of the widgets of the calendar menu.
+    '''
     calendar_window = tk.Toplevel(root)
     calendar_window.title("Visual Calendar")
     calendar_window.geometry("1400x1000")

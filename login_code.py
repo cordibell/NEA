@@ -71,6 +71,9 @@ def saving_new_account(username, password, mydb): # validates & saves new accoun
 
 
 class Account:
+    '''
+    This class encapsulates all information to do with a user's account.
+    '''
     def __init__(self, username, password):
         self.username = username
         self.password = password

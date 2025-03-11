@@ -4,6 +4,9 @@ from tktooltip import ToolTip
 from tkinter import messagebox
 
 class setPreferredTime:
+    '''
+    This class contains all information to do with the preferred time menu inputs.
+    '''
     def __init__(self, set_preferred_time_window, start_date, end_date, start_time, end_time):
         self.set_preferred_time_window = set_preferred_time_window
         self.start_date = start_date
@@ -23,6 +26,8 @@ class setPreferredTime:
     def get_end_time(self):
         return self.end_time.get()
 
+    # error message boxes
+
     def invalid_date_format(self):
         messagebox.showerror("Invalid date", "Date format must be DD/MM/YY")
 
@@ -39,7 +44,9 @@ class setPreferredTime:
         messagebox.showerror("Error", "Error")
 
 def set_preferred_times_menu(root, set_preferred_time_command, back_command): 
-    
+    '''
+    This function contains all the Tkinter widgets for the preferred time window.
+    '''
     set_preferred_time_window = tk.Toplevel(root)
     set_preferred_time_window.title("Set preferred time")
     set_preferred_time_window.geometry("1050x800")

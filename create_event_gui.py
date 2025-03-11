@@ -5,6 +5,9 @@ from tktooltip import ToolTip
 from tkinter import messagebox
 
 class createEvents:
+    '''
+    This class contains all information in the entry boxes on the "Create an event" window.
+    '''
     def __init__(self, create_event_window, start_date, end_date, start_time, end_time, event_title, is_repetitive, repetitive_timeframe_var, is_tentative_var):
         self.create_event_window = create_event_window
         self.start_date = start_date
@@ -40,6 +43,8 @@ class createEvents:
     def get_is_tentative(self):
         return self.is_tentative_var.get()
     
+    # error message boxes
+
     def invalid_date_logic(self):
         messagebox.showerror("Invalid date", "Start date after end date")
     
@@ -66,7 +71,9 @@ class createEvents:
 
 
 def create_event_menu(root, create_event_command, back_command):
-
+    '''
+    This function contains all of the Tkinter widgets for the "Create an event" window.
+    '''
     create_event_window = tk.Toplevel(root)
     create_event_window.title("Create an event")
     create_event_window.geometry("1050x800")

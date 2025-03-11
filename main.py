@@ -63,10 +63,8 @@ class LoginCommands: # encapsulates methods to collect & process data from login
     
     def load_join_menu(self): # loads next menu if username matches password & withdraws current menu
         '''
-        This method instantiates an object of class "JoinEventCommands".
-        Next, it hides the login menu.
-        It then collects the "join_event" window created by Tkinter, in "join_events_gui".
-        Lastly, it sets this window to be an attribute of the object instantiated earlier in the method.
+        This method hides the login menu.
+        Then, it shows the "Join event" menu by instantiating an object of "joinEventCommand" class.
         '''
         joinEventCommand = JoinEventCommands(mydb, self.existing_username)
         self.login.login_window.withdraw()
@@ -77,7 +75,7 @@ class LoginCommands: # encapsulates methods to collect & process data from login
         '''
         This method is called when the "Create account" button is clicked.
         It collects the username/password from their respective entries on the Login window
-        Then, it validates & stores this information in the database by calling a function called "saved_to_db.
+        Then, it validates & stores this information in the database by calling a function called "saved_to_db".
         '''
         username = self.login.get_new_username()
         password = self.login.get_new_password()
@@ -112,10 +110,8 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
     def collect_join_event(self): # collects data from join event code text field
         '''
         This method is called when the "Join Event" confirmation button is clicked.
-        It collects the code that was inputted into the entry box.
-        Then, it verifies if the id exists in the database.
-        If the ID does exist, it checks if the user is already in the event by calling the function "check_username_in_event_members".
-        If the ID exists, it takes the user to the visual calendar menu.
+        It collects, validates & verifies the code the user inputted.
+        It takes them to the calendar menu if the code exists.
         '''
         self.eventID = self.join_event.get_join_event_code()
         id_exists = join_events_code.find_event_id(self.eventID, self.mydb)
@@ -128,10 +124,8 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
     def collect_host_event(self): # collects data from hosting event inputs
         '''
         This method is called when the "Host event" confirmation button is clicked.
-        Firstly, it collects all of the inputs from the entry boxes & buttons on the page.
-        Then, it generates a unique code for that event.
-        Next, it validates the user's inputs against the criteria (e.g. correct format, length in range).
-        If the event is valid, it displays the uniquely generated code to the user.
+        Firstly, it collects all of the inputs on the page, validates them & generates a unique code.
+        If they're valid, it outputs the code.
         '''
         selected_timeframe = self.join_event.get_timeframe_var()
         timeframe = join_events_code.find_timeframe(selected_timeframe)
@@ -154,9 +148,8 @@ class JoinEventCommands: # encapsulates methods to collect & process data from j
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
         '''
         This method loads the calendar menu.
-        It first instantiates an object of the CalendarCommands class, then hides the "join event" window.
-        Next, it collects an object containing all of the Tkinter widget information. 
-        Then, it sets the eventID attribute, and the calendar_menu attribute.
+        It hides the "Join an event" window.
+        Then, it instantiates an object of the "CalendarCommands" class.
         '''
         calendarCommand = CalendarCommands(self.mydb, self.username, self.eventID)
         self.join_event.join_events_window.withdraw()
@@ -182,11 +175,9 @@ class CalendarCommands:
     def load_create_event_menu(self): # loads create event menu & hides calendar menu
         '''
         This method is called when the "Add an event" button is clicked.
-        It first instantiates an object of the "CreateEventCommands" class.
-        Then, it hides the calendar menu. 
-        Next, it collects an object that contains all the information about the "Create event" window from the "create_event_menu" function.
-        Lastly, it sets this object as an attribute of the createEventCommand object.
-        This causes the "Create an event" menu to appear on-screen.
+        It hides the calendar menu.
+        It then shows the "Create event" menu by instantiating an object of the "CreateEventCommands" class.
+        
         '''
         createEventCommand = CreateEventCommands(self.mydb, self.calendar_menu, self.username)
         self.calendar_menu.calendar_window.withdraw()
@@ -196,11 +187,8 @@ class CalendarCommands:
     def load_preferred_time_menu(self): # loads preferred time menu, hides calendar window
         '''
         This method is called when the "Set preferred times" button is clicked.
-        It firstly instantiates an object of the "SetPreferredTimeCommands" class.
-        Then, it hides the calendar menu.
-        Next, it collects an object from the "Set preferred times" menu which contains all the information about this window.
-        It saves this object as the "set_preferred_time_menu" attribute of the "setPreferredTimeCommand" object.
-        This causes the "Set preferred time" menu to appear on-screen.
+        It hides the calendar menu.
+        Then, it shows the "Preferred time" menu by instantiating an object of the "SetPreferredTimeCommands" class.
         '''
         setPreferredTimeCommand = SetPreferredTimeCommands(self.mydb, self.calendar_menu, self.username)
         self.calendar_menu.calendar_window.withdraw()
@@ -210,12 +198,8 @@ class CalendarCommands:
     def load_optimal_time_menu(self): # loads optimal time menu, hides calendar window
         '''
         This method is called when the "View optimal times" button is clicked.
-        It first instantiates an object of the "OptimalTimeCommands" class.
-        Then, it hides the calendar window.
-        Next, it collects a list of the best times by calling a function in the "calculate_optimal_time" module.
-        It then collects an object from the function "optimal_time_menu" which contains information about the implementation of the GUI.
-        Lastly, it sets this object as an attribute of the first object made in the function.
-        This causes the "Choose Optimal Time" menu to appear on-screen.
+        It hides the calendar menu.
+        Then, it shows the "Optimal time" menu by instantiating an object of the "OptimalTimeCommands"
         '''
         optimalTimeCommand = OptimalTimeCommands(self.mydb, self.calendar_menu)
         self.calendar_menu.calendar_window.withdraw()
@@ -224,6 +208,9 @@ class CalendarCommands:
         optimalTimeCommand.set_optimal_time_menu(optimal_time_menu)
 
 class CreateEventCommands:
+    '''
+    This class encapsulates all of the information to do with the "Create an event" menu, such as its window & functionality.
+    '''
     def __init__(self, mydb, calendar_menu, username):
         self.mydb = mydb
         self.calendar_window = calendar_menu.calendar_window
@@ -231,9 +218,19 @@ class CreateEventCommands:
         self.username = username
     
     def set_create_event_menu(self, create_event_menu):
+        '''
+        This method sets the attribute "create_event_menu" to contain the object that stores all the information about the menu.
+        '''
         self.create_event_menu = create_event_menu
     
     def create_event(self):
+        '''
+        This method is called when the "Create event" button is clicked.
+        It collects each input from the entry boxes & validates them.
+        Then, it calls the "create_event" function from "create_event_code.py".
+        If it's valid, it loads the calendar menu.
+        If not, it checks the other values to determine which error was received, and load a message box.
+        '''
         start_date = self.create_event_menu.get_start_date()
         end_date = self.create_event_menu.get_end_date()
         start_time = self.create_event_menu.get_start_time()
@@ -264,19 +261,34 @@ class CreateEventCommands:
             self.create_event_menu.invalid_tentability()
 
     def load_calendar_menu(self): # loads the calendar menu & hides join event menu
+        '''
+        This method is called when an event is successfully created.
+        It hides the "create event menu" and makes the calendar menu re-appear on screen.
+        '''
         self.create_event_menu.create_event_window.withdraw()
         self.calendar_window.deiconify()
     
 class SetPreferredTimeCommands:
+    '''
+    This class encapsulates everything to do with the "Set preferred time" menu, including its functionality and window.
+    '''
     def __init__(self, mydb, calendar_menu, username):
         self.mydb = mydb
         self.calendar_window = calendar_menu.calendar_window
         self.username = username
     
     def set_set_preferred_time_menu(self, set_preferred_time_menu):
+        '''
+        This method sets the "set_preferred_time_menu" attribute to be an object that contains all information about the window.
+        '''
         self.set_preferred_time_menu = set_preferred_time_menu
     
     def set_preferred_time(self):
+        '''
+        This method collects & validates the inputs on the menu.
+        If they're valid, it loads the calendar menu.
+        If not, it loads a corresponding error message box.
+        '''
         start_date = self.set_preferred_time_menu.get_start_date()
         end_date = self.set_preferred_time_menu.get_end_date()
         start_time = self.set_preferred_time_menu.get_start_time()
@@ -296,18 +308,30 @@ class SetPreferredTimeCommands:
             self.set_preferred_time_menu.error()
 
     def load_calendar_menu(self): 
+        '''
+        This method hides the preferred time menu and re-shows the calendar menu.
+        '''
         self.set_preferred_time_menu.set_preferred_time_window.withdraw()
         self.calendar_window.deiconify()
 
 class OptimalTimeCommands:
+    '''
+    This class encapsulates everything to do with the Optimal Time menu.
+    '''
     def __init__(self, mydb, calendar_menu):
         self.mydb = mydb
         self.calendar_window = calendar_menu.calendar_window
     
     def set_optimal_time_menu(self, optimal_time_menu):
+        '''
+        This method sets the "optimal_time_menu" attribute to be an object that contains all information about the window.
+        '''
         self.optimal_time_menu = optimal_time_menu
     
     def load_calendar_menu(self):
+        '''
+        This method hides the optimal time menu and re-shows the calendar menu.
+        '''
         self.optimal_time_menu.optimal_time_window.withdraw()
         self.calendar_window.deiconify()
 

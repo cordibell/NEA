@@ -14,6 +14,9 @@ mydb = mysql.connector.connect(
 )
 
 class joinEvents: # encapsulates data from joining & hosting events
+    '''
+    This class encapsulates all the data from the entry buttons on the join event menu.
+    '''
     def __init__(self, join_events_window, join_event_code, timeframe_var, start_date, end_date, event_title):
         self.join_events_window = join_events_window
         self.join_event_code = join_event_code
@@ -37,6 +40,8 @@ class joinEvents: # encapsulates data from joining & hosting events
     def get_event_title(self):
         return self.event_title.get()
     
+    # Error message boxes
+
     def display_unique_code(self, generated_code):
         messagebox.showinfo("Event code", f"Your event code is {generated_code}.")
     
@@ -58,7 +63,9 @@ class joinEvents: # encapsulates data from joining & hosting events
 # tkinter window
 
 def join_events_menu(root, collect_join_event, collect_host_event): # displays join events window
-
+    '''
+    This function loads all of the widgets for the "Join Events" menu.
+    '''
     join_events_window = tk.Toplevel(root)
     join_events_window.title("Join or Host an Event Menu")
     join_events_window.geometry("1050x800")
@@ -66,7 +73,7 @@ def join_events_menu(root, collect_join_event, collect_host_event): # displays j
     # Collecting information
 
     timeframe_var = tk.IntVar()
-        
+
     # Constructing the two frames for this component
     join_event_frame = tk.Frame(join_events_window)
     host_event_frame = tk.Frame(join_events_window)
@@ -279,5 +286,3 @@ def join_events_menu(root, collect_join_event, collect_host_event): # displays j
     ToolTip(join_event_code_entry_label, msg="Enter your 8 digit long code e.g. A123B456")
 
     return joinEvents(join_events_window, join_event_code_entry, timeframe_var, start_date_entry, end_date_entry, event_title_entry)
-
-mydb.close()
