@@ -4,6 +4,13 @@ from tktooltip import ToolTip
 from tkinter import messagebox
 import mysql.connector
 
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="standardUser",
+    password="StandardPassword123!",
+    database="ComputerScienceNEA"
+)
+
 class Login: # encapsulates data from entry & window into a class to easily move it to main.py
     '''
     This class encapsulates data from the entry boxes as well as error messages for the window.
@@ -67,11 +74,11 @@ def login_menu(login_command, new_account_command): # contains all the widgets f
     border_colour_existing_account = tk.Frame(existing_account_frame, bg="red")
     border_colour_create_account = tk.Frame(create_account_frame, bg="red")
 
-    border_colour_existing_username = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_existing_password = tk.Frame(existing_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_existing_username = tk.Frame(existing_account_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_existing_password = tk.Frame(existing_account_frame, highlightbackground="orange", highlightthickness=2)
 
-    border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
-    border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="red", highlightthickness=2)
+    border_colour_new_username = tk.Frame(create_account_frame, highlightbackground="orange", highlightthickness=2)
+    border_colour_new_password = tk.Frame(create_account_frame, highlightbackground="orange", highlightthickness=2)
 
 
     # Constructing the label widgets for the titles
